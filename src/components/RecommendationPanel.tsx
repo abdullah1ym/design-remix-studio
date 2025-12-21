@@ -16,8 +16,8 @@ const RecommendationPanel = () => {
         animate={{ rotate: [0, 10, -10, 0] }}
         transition={{ duration: 4, repeat: Infinity }}
       >
-        <div className="w-16 h-16 gradient-turquoise rounded-2xl flex items-center justify-center rotate-12 shadow-lg">
-          <Sparkles className="w-8 h-8 text-turquoise-foreground" />
+        <div className="w-16 h-16 bg-yellow rounded-2xl flex items-center justify-center rotate-12 shadow-lg">
+          <Sparkles className="w-8 h-8 text-yellow-foreground" />
         </div>
       </motion.div>
 

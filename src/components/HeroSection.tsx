@@ -13,12 +13,12 @@ const HeroSection = () => {
         {/* Content */}
         <div className="flex-1 p-8 z-10">
           <motion.span 
-            className="inline-block px-3 py-1 bg-foreground/10 backdrop-blur-sm rounded-full text-xs font-semibold mb-4"
+            className="inline-block px-3 py-1 bg-yellow text-yellow-foreground rounded-full text-xs font-semibold mb-4"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
-            Start here
+            ⭐ Start here
           </motion.span>
           
           <motion.h1 
@@ -72,7 +72,7 @@ const HeroSection = () => {
           
           {/* Watch Button */}
           <motion.button 
-            className="flex items-center gap-3 px-6 py-3 bg-foreground text-background rounded-xl font-semibold hover:opacity-90 transition-opacity shadow-lg"
+            className="flex items-center gap-3 px-6 py-3 bg-yellow text-yellow-foreground rounded-xl font-semibold hover:brightness-110 transition-all shadow-lg"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             initial={{ opacity: 0, y: 20 }}
