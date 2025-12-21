@@ -1,96 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Ocean Theme - Deep Sea Colors */
+    --background: 230 70% 12%;
+    --foreground: 200 100% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 230 60% 18%;
+    --card-foreground: 200 100% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 230 60% 18%;
+    --popover-foreground: 200 100% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary - Ocean Blue */
+    --primary: 220 85% 55%;
+    --primary-foreground: 200 100% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary - Deeper Blue */
+    --secondary: 225 65% 25%;
+    --secondary-foreground: 200 100% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted - Deep Navy */
+    --muted: 228 50% 20%;
+    --muted-foreground: 210 30% 65%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent - Coral Pink */
+    --accent: 350 80% 65%;
+    --accent-foreground: 200 100% 98%;
+
+    /* Coral */
+    --coral: 350 80% 65%;
+    --coral-foreground: 200 100% 98%;
+
+    /* Turquoise */
+    --turquoise: 175 70% 50%;
+    --turquoise-foreground: 230 70% 12%;
+
+    /* Yellow - Sunny */
+    --yellow: 45 95% 60%;
+    --yellow-foreground: 230 70% 12%;
+
+    /* Mint Green */
+    --mint: 155 60% 55%;
+    --mint-foreground: 230 70% 12%;
+
+    /* Purple - Jellyfish */
+    --jellyfish: 280 60% 65%;
+    --jellyfish-foreground: 200 100% 98%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 225 50% 25%;
+    --input: 225 50% 25%;
+    --ring: 220 85% 55%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
 
-    --sidebar-background: 0 0% 98%;
+    /* Gradients */
+    --gradient-ocean: linear-gradient(180deg, hsl(225 75% 45%) 0%, hsl(230 70% 12%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(230 60% 22%) 0%, hsl(230 60% 16%) 100%);
+    --gradient-coral: linear-gradient(135deg, hsl(350 80% 65%) 0%, hsl(340 75% 55%) 100%);
+    --gradient-turquoise: linear-gradient(135deg, hsl(175 70% 50%) 0%, hsl(185 65% 45%) 100%);
+    --gradient-yellow: linear-gradient(135deg, hsl(45 95% 60%) 0%, hsl(35 90% 55%) 100%);
+    --gradient-mint: linear-gradient(135deg, hsl(155 60% 55%) 0%, hsl(165 55% 45%) 100%);
+    --gradient-jellyfish: linear-gradient(135deg, hsl(280 60% 65%) 0%, hsl(270 55% 55%) 100%);
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    /* Shadows */
+    --shadow-glow: 0 0 40px hsl(220 85% 55% / 0.3);
+    --shadow-card: 0 8px 32px hsl(230 70% 8% / 0.5);
+    --shadow-button: 0 4px 16px hsl(230 70% 8% / 0.4);
 
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Sidebar */
+    --sidebar-background: 230 65% 10%;
+    --sidebar-foreground: 200 100% 98%;
+    --sidebar-primary: 220 85% 55%;
+    --sidebar-primary-foreground: 200 100% 98%;
+    --sidebar-accent: 230 60% 18%;
+    --sidebar-accent-foreground: 200 100% 98%;
+    --sidebar-border: 225 50% 20%;
+    --sidebar-ring: 220 85% 55%;
   }
 }
 
@@ -100,6 +93,92 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Nunito', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Nunito', sans-serif;
+    @apply font-bold;
+  }
+}
+
+@layer utilities {
+  .gradient-ocean {
+    background: var(--gradient-ocean);
+  }
+
+  .gradient-card {
+    background: var(--gradient-card);
+  }
+
+  .gradient-coral {
+    background: var(--gradient-coral);
+  }
+
+  .gradient-turquoise {
+    background: var(--gradient-turquoise);
+  }
+
+  .gradient-yellow {
+    background: var(--gradient-yellow);
+  }
+
+  .gradient-mint {
+    background: var(--gradient-mint);
+  }
+
+  .gradient-jellyfish {
+    background: var(--gradient-jellyfish);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .bubble {
+    @apply absolute rounded-full bg-foreground/10 animate-float;
+  }
+
+  .wave-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%234a90d9' fill-opacity='0.1' d='M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes bubble-rise {
+  0% {
+    transform: translateY(100%) scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-100vh) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
   }
 }
