@@ -6,10 +6,12 @@ import RecommendationPanel from "@/components/RecommendationPanel";
 import CategoryTabs from "@/components/CategoryTabs";
 import LessonGrid from "@/components/LessonGrid";
 import BubbleDecoration from "@/components/BubbleDecoration";
+import AdminPanel from "@/components/AdminPanel";
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState("explore");
   const [activeCategory, setActiveCategory] = useState("coral-reefs");
+  const [adminOpen, setAdminOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
@@ -24,7 +26,7 @@ const Index = () => {
 
       {/* Main Content */}
       <div className="ml-16 relative z-10">
-        <Header />
+        <Header onManageGuide={() => setAdminOpen(true)} />
         
         <main className="p-6">
           <div className="max-w-7xl mx-auto">
@@ -51,6 +53,9 @@ const Index = () => {
           </div>
         </main>
       </div>
+
+      {/* Admin Panel */}
+      <AdminPanel open={adminOpen} onOpenChange={setAdminOpen} />
     </div>
   );
 };

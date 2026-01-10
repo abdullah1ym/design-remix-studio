@@ -1,7 +1,11 @@
 import { Search, Star, MoreVertical, Fish } from "lucide-react";
 import { motion } from "framer-motion";
 
-const Header = () => {
+interface HeaderProps {
+  onManageGuide?: () => void;
+}
+
+const Header = ({ onManageGuide }: HeaderProps) => {
   return (
     <header className="h-16 bg-card/50 backdrop-blur-md border-b border-border flex items-center justify-between px-6">
       {/* Left - Breadcrumb */}
@@ -36,7 +40,10 @@ const Header = () => {
           <span>Your favorite lessons</span>
         </button>
         
-        <button className="px-4 py-2 bg-turquoise text-turquoise-foreground rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity">
+        <button
+          onClick={onManageGuide}
+          className="px-4 py-2 bg-turquoise text-turquoise-foreground rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity"
+        >
           Manage Guide
         </button>
         

@@ -1,44 +1,24 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Lock, Play, Star, Zap, Anchor, Fish, Shell, Waves, X } from "lucide-react";
+import { Check, Lock, Play, Star, Zap, Anchor, Fish, Shell, Waves, X, Compass, Globe } from "lucide-react";
+import { useSkills, SkillNode } from "@/contexts/SkillsContext";
 
 interface ProgressMapProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-interface SkillNode {
-  id: number;
-  title: string;
-  status: "completed" | "current" | "available" | "locked";
-  x: number;
-  y: number;
-  icon: React.ReactNode;
-  color: string;
-  size: "small" | "medium" | "large";
-  connections: number[];
-}
+const iconMap: Record<string, React.ReactNode> = {
+  Anchor: <Anchor className="w-4 h-4" />,
+  Fish: <Fish className="w-4 h-4" />,
+  Waves: <Waves className="w-4 h-4" />,
+  Shell: <Shell className="w-4 h-4" />,
+  Zap: <Zap className="w-4 h-4" />,
+  Star: <Star className="w-4 h-4" />,
+  Compass: <Compass className="w-4 h-4" />,
+  Globe: <Globe className="w-4 h-4" />,
+};
 
-const skillNodes: SkillNode[] = [
-  // Starting node (bottom center)
-  { id: 1, title: "Ocean Basics", status: "completed", x: 50, y: 85, icon: <Anchor className="w-5 h-5" />, color: "turquoise", size: "large", connections: [2, 3] },
-  
-  // Second tier
-  { id: 2, title: "Marine Life", status: "completed", x: 30, y: 65, icon: <Fish className="w-4 h-4" />, color: "turquoise", size: "medium", connections: [4, 5] },
-  { id: 3, title: "Ocean Currents", status: "completed", x: 70, y: 65, icon: <Waves className="w-4 h-4" />, color: "turquoise", size: "medium", connections: [5, 6] },
-  
-  // Third tier
-  { id: 4, title: "Coral Reefs", status: "current", x: 15, y: 45, icon: <Shell className="w-4 h-4" />, color: "yellow", size: "medium", connections: [7] },
-  { id: 5, title: "Ecosystems", status: "available", x: 50, y: 45, icon: <Zap className="w-4 h-4" />, color: "muted", size: "large", connections: [7, 8, 9] },
-  { id: 6, title: "Deep Sea", status: "available", x: 85, y: 45, icon: <Fish className="w-4 h-4" />, color: "muted", size: "medium", connections: [9] },
-  
-  // Fourth tier
-  { id: 7, title: "Conservation", status: "locked", x: 25, y: 25, icon: <Star className="w-4 h-4" />, color: "muted", size: "medium", connections: [10] },
-  { id: 8, title: "Research", status: "locked", x: 50, y: 20, icon: <Zap className="w-4 h-4" />, color: "muted", size: "small", connections: [10] },
-  { id: 9, title: "Exploration", status: "locked", x: 75, y: 25, icon: <Anchor className="w-4 h-4" />, color: "muted", size: "medium", connections: [10] },
-  
-  // Master node (top center)
-  { id: 10, title: "Ocean Master", status: "locked", x: 50, y: 5, icon: <Star className="w-6 h-6" />, color: "jellyfish", size: "large", connections: [] },
-];
+const getIcon = (iconName: string) => iconMap[iconName] || <Star className="w-4 h-4" />;
 
 const getNodeStyles = (node: SkillNode) => {
   const baseSize = node.size === "large" ? "w-14 h-14" : node.size === "medium" ? "w-11 h-11" : "w-8 h-8";
@@ -76,6 +56,7 @@ const getNodeStyles = (node: SkillNode) => {
 };
 
 const ProgressMap = ({ open, onOpenChange }: ProgressMapProps) => {
+  const { skills: skillNodes } = useSkills();
   const completedCount = skillNodes.filter(n => n.status === "completed").length;
   const totalCount = skillNodes.length;
 
@@ -219,7 +200,7 @@ const ProgressMap = ({ open, onOpenChange }: ProgressMapProps) => {
                     ) : node.status === "current" ? (
                       <Play className="w-5 h-5 text-yellow-foreground" />
                     ) : (
-                      <span className="text-foreground/70">{node.icon}</span>
+                      <span className="text-foreground/70">{getIcon(node.iconName)}</span>
                     )}
                   </motion.div>
 
