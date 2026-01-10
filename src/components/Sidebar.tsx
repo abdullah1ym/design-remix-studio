@@ -47,7 +47,7 @@ const Sidebar = ({ activeSection, onSectionChange }: SidebarProps) => {
         transition={{ type: "spring", stiffness: 400 }}
       >
         <div className="w-10 h-10 rounded-xl bg-yellow flex items-center justify-center shadow-lg">
-          <Fish className="w-6 h-6 text-yellow-foreground" />
+          <Shell className="w-6 h-6 text-yellow-foreground" />
         </div>
       </motion.div>
 
