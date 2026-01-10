@@ -8,7 +8,7 @@ import LessonGrid from "@/components/LessonGrid";
 import BubbleDecoration from "@/components/BubbleDecoration";
 import AdminPanel from "@/components/AdminPanel";
 import ExerciseModal from "@/components/ExerciseModal";
-import { Exercise } from "@/data/exercises";
+import { Exercise } from "@/contexts/ExercisesContext";
 import ProgressView from "@/components/views/ProgressView";
 import SettingsView from "@/components/views/SettingsView";
 import HelpView from "@/components/views/HelpView";

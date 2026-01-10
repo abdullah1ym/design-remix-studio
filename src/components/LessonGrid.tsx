@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Play, Info, Volume2, Clock } from "lucide-react";
-import { getExercisesByCategory, Exercise } from "@/data/exercises";
+import { useExercises, Exercise } from "@/contexts/ExercisesContext";
 
 interface LessonGridProps {
   category: string;
@@ -28,6 +28,7 @@ const difficultyColors: Record<string, string> = {
 };
 
 const LessonGrid = ({ category, onExerciseClick }: LessonGridProps) => {
+  const { getExercisesByCategory } = useExercises();
   const exercises = getExercisesByCategory(category);
 
   return (

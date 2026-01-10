@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Volume2, Play, CheckCircle, XCircle, RotateCcw, ChevronLeft } from "lucide-react";
-import { Exercise, Question } from "@/data/exercises";
+import { Exercise, Question } from "@/contexts/ExercisesContext";
 
 interface ExerciseModalProps {
   exercise: Exercise | null;

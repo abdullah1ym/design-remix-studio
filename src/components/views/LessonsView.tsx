@@ -1,50 +1,12 @@
 import { motion } from "framer-motion";
 import { BookOpen, Clock, Star, ChevronLeft } from "lucide-react";
-
-const lessons = [
-  {
-    id: 1,
-    title: "أساسيات التدريب السمعي",
-    description: "تعلم المفاهيم الأساسية للتدريب السمعي وكيفية الاستفادة القصوى من البرنامج",
-    duration: "١٠ دقائق",
-    progress: 100,
-    completed: true,
-  },
-  {
-    id: 2,
-    title: "فهم النغمات والأصوات",
-    description: "كيف تعمل الأذن على تمييز النغمات المختلفة وأهمية التدريب المستمر",
-    duration: "١٥ دقيقة",
-    progress: 60,
-    completed: false,
-  },
-  {
-    id: 3,
-    title: "تمييز الحروف العربية",
-    description: "تعلم كيفية التمييز بين الحروف العربية المتشابهة في النطق",
-    duration: "٢٠ دقيقة",
-    progress: 0,
-    completed: false,
-  },
-  {
-    id: 4,
-    title: "فهم الكلمات في السياق",
-    description: "تطوير مهارة فهم الكلمات ضمن جمل وسياقات مختلفة",
-    duration: "٢٥ دقيقة",
-    progress: 0,
-    completed: false,
-  },
-  {
-    id: 5,
-    title: "التدريب على المحادثات",
-    description: "تعلم استراتيجيات فهم المحادثات اليومية بشكل أفضل",
-    duration: "٣٠ دقيقة",
-    progress: 0,
-    completed: false,
-  },
-];
+import { useLessons } from "@/contexts/LessonsContext";
 
 const LessonsView = () => {
+  const { lessons } = useLessons();
+  const completedCount = lessons.filter(l => l.completed).length;
+  const progressPercent = Math.round((completedCount / lessons.length) * 100);
+
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
       <motion.div
@@ -65,14 +27,14 @@ const LessonsView = () => {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-muted-foreground mb-1">تقدمك في الدروس</p>
-            <p className="text-2xl font-bold">١ من ٥ مكتمل</p>
+            <p className="text-2xl font-bold">{completedCount} من {lessons.length} مكتمل</p>
           </div>
           <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center">
-            <span className="text-2xl font-bold text-primary">٢٠٪</span>
+            <span className="text-2xl font-bold text-primary">{progressPercent}٪</span>
           </div>
         </div>
         <div className="mt-4 h-2 bg-muted rounded-full overflow-hidden">
-          <div className="h-full w-1/5 bg-primary rounded-full" />
+          <div className="h-full bg-primary rounded-full" style={{ width: `${progressPercent}%` }} />
         </div>
       </motion.div>
 
