@@ -10,7 +10,8 @@ import {
   Award,
   Heart,
   Ear,
-  Volume2
+  Volume2,
+  Map
 } from "lucide-react";
 
 interface SidebarProps {
@@ -28,6 +29,7 @@ const menuItems = [
 
 const guideItems = [
   { id: "lessons", icon: BookOpen, label: "الدروس", group: "التعلم" },
+  { id: "skillmap", icon: Map, label: "خريطة المهارات", group: "التعلم" },
   { id: "achievements", icon: Award, label: "الإنجازات", group: "التعلم" },
   { id: "favorites", icon: Heart, label: "المفضلة", group: "التعلم" },
 ];
@@ -39,7 +41,7 @@ const resourceItems = [
 
 const Sidebar = ({ activeSection, onSectionChange }: SidebarProps) => {
   return (
-    <aside className="fixed right-0 top-0 h-screen w-16 bg-sidebar border-l border-sidebar-border flex flex-col items-center py-6 z-50">
+    <aside className="fixed right-0 top-0 h-screen w-20 bg-sidebar border-l border-sidebar-border flex flex-col items-center py-6 z-50">
       {/* Logo */}
       <motion.div
         className="mb-8"

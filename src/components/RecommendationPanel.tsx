@@ -10,7 +10,7 @@ const RecommendationPanel = () => {
   return (
     <>
       <motion.div
-        className="bg-card rounded-2xl p-6 relative overflow-hidden"
+        className="bg-card rounded-2xl p-6 relative overflow-hidden h-full"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}

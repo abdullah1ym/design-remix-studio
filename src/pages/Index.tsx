@@ -9,6 +9,15 @@ import BubbleDecoration from "@/components/BubbleDecoration";
 import AdminPanel from "@/components/AdminPanel";
 import ExerciseModal from "@/components/ExerciseModal";
 import { Exercise } from "@/data/exercises";
+import ProgressView from "@/components/views/ProgressView";
+import SettingsView from "@/components/views/SettingsView";
+import HelpView from "@/components/views/HelpView";
+import LessonsView from "@/components/views/LessonsView";
+import AchievementsView from "@/components/views/AchievementsView";
+import FavoritesView from "@/components/views/FavoritesView";
+import HearingTestView from "@/components/views/HearingTestView";
+import SoundLibraryView from "@/components/views/SoundLibraryView";
+import SkillMapView from "@/components/views/SkillMapView";
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState("home");
@@ -39,31 +48,53 @@ const Index = () => {
       <Sidebar activeSection={activeSection} onSectionChange={setActiveSection} />
 
       {/* Main Content */}
-      <div className="mr-16 relative z-10">
+      <div className="mr-20 relative z-10">
         <Header onManageGuide={() => setAdminOpen(true)} />
         
         <main className="p-6">
           <div className="max-w-7xl mx-auto">
-            {/* Hero + Recommendation Grid */}
-            <div className="grid grid-cols-3 gap-6 mb-8">
-              <div className="col-span-2">
-                <HeroSection />
-              </div>
-              <div className="col-span-1">
-                <RecommendationPanel />
-              </div>
-            </div>
+            {activeSection === "home" || activeSection === "exercises" ? (
+              <>
+                {/* Hero + Recommendation Grid */}
+                <div className="grid grid-cols-3 gap-6 mb-8 items-stretch">
+                  <div className="col-span-2 h-full">
+                    <HeroSection />
+                  </div>
+                  <div className="col-span-1 h-full">
+                    <RecommendationPanel />
+                  </div>
+                </div>
 
-            {/* Category Tabs */}
-            <div className="mb-6">
-              <CategoryTabs 
-                activeCategory={activeCategory} 
-                onCategoryChange={setActiveCategory} 
-              />
-            </div>
+                {/* Category Tabs */}
+                <div className="mb-6">
+                  <CategoryTabs
+                    activeCategory={activeCategory}
+                    onCategoryChange={setActiveCategory}
+                  />
+                </div>
 
-            {/* Lesson Grid */}
-            <LessonGrid category={activeCategory} onExerciseClick={handleExerciseClick} />
+                {/* Lesson Grid */}
+                <LessonGrid category={activeCategory} onExerciseClick={handleExerciseClick} />
+              </>
+            ) : activeSection === "progress" ? (
+              <ProgressView />
+            ) : activeSection === "settings" ? (
+              <SettingsView />
+            ) : activeSection === "help" ? (
+              <HelpView />
+            ) : activeSection === "lessons" ? (
+              <LessonsView />
+            ) : activeSection === "skillmap" ? (
+              <SkillMapView />
+            ) : activeSection === "achievements" ? (
+              <AchievementsView />
+            ) : activeSection === "favorites" ? (
+              <FavoritesView />
+            ) : activeSection === "hearing" ? (
+              <HearingTestView />
+            ) : activeSection === "sounds" ? (
+              <SoundLibraryView />
+            ) : null}
           </div>
         </main>
       </div>

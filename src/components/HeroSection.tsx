@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 const HeroSection = () => {
   return (
     <motion.div
-      className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 to-secondary"
+      className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 to-secondary h-full"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
