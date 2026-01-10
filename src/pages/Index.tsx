@@ -7,17 +7,31 @@ import CategoryTabs from "@/components/CategoryTabs";
 import LessonGrid from "@/components/LessonGrid";
 import BubbleDecoration from "@/components/BubbleDecoration";
 import AdminPanel from "@/components/AdminPanel";
+import ExerciseModal from "@/components/ExerciseModal";
+import { Exercise } from "@/data/exercises";
 
 const Index = () => {
-  const [activeSection, setActiveSection] = useState("explore");
-  const [activeCategory, setActiveCategory] = useState("coral-reefs");
+  const [activeSection, setActiveSection] = useState("home");
+  const [activeCategory, setActiveCategory] = useState("tones");
   const [adminOpen, setAdminOpen] = useState(false);
+  const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
+  const [exerciseModalOpen, setExerciseModalOpen] = useState(false);
+
+  const handleExerciseClick = (exercise: Exercise) => {
+    setSelectedExercise(exercise);
+    setExerciseModalOpen(true);
+  };
+
+  const handleExerciseClose = () => {
+    setExerciseModalOpen(false);
+    setSelectedExercise(null);
+  };
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Background Decoration */}
       <BubbleDecoration />
-      
+
       {/* Gradient overlay */}
       <div className="fixed inset-0 bg-gradient-to-b from-primary/5 via-transparent to-turquoise/5 pointer-events-none z-0" />
 
@@ -25,7 +39,7 @@ const Index = () => {
       <Sidebar activeSection={activeSection} onSectionChange={setActiveSection} />
 
       {/* Main Content */}
-      <div className="ml-16 relative z-10">
+      <div className="mr-16 relative z-10">
         <Header onManageGuide={() => setAdminOpen(true)} />
         
         <main className="p-6">
@@ -49,13 +63,20 @@ const Index = () => {
             </div>
 
             {/* Lesson Grid */}
-            <LessonGrid category={activeCategory} />
+            <LessonGrid category={activeCategory} onExerciseClick={handleExerciseClick} />
           </div>
         </main>
       </div>
 
       {/* Admin Panel */}
       <AdminPanel open={adminOpen} onOpenChange={setAdminOpen} />
+
+      {/* Exercise Modal */}
+      <ExerciseModal
+        exercise={selectedExercise}
+        open={exerciseModalOpen}
+        onClose={handleExerciseClose}
+      />
     </div>
   );
 };

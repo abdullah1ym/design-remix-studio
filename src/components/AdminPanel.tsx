@@ -8,7 +8,7 @@ interface AdminPanelProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const iconOptions = ["Anchor", "Fish", "Waves", "Shell", "Zap", "Star", "Compass", "Globe"];
+const iconOptions = ["Volume2", "Music", "Ear", "Type", "MessageCircle", "MessageSquare", "Users", "TreePine", "Radio", "Award", "Star"];
 const statusOptions: SkillNode["status"][] = ["completed", "current", "available", "locked"];
 const sizeOptions: SkillNode["size"][] = ["small", "medium", "large"];
 const colorOptions = ["turquoise", "yellow", "muted", "jellyfish", "coral"];
@@ -79,7 +79,7 @@ const AdminPanel = ({ open, onOpenChange }: AdminPanelProps) => {
   };
 
   const handleDelete = (id: number) => {
-    if (confirm("Are you sure you want to delete this skill?")) {
+    if (confirm("هل أنت متأكد من حذف هذه المهارة؟")) {
       deleteSkill(id);
       if (editingId === id) {
         handleCancel();
@@ -88,8 +88,8 @@ const AdminPanel = ({ open, onOpenChange }: AdminPanelProps) => {
   };
 
   const resetToDefaults = () => {
-    if (confirm("Reset all skills to default? This will remove any custom skills.")) {
-      localStorage.removeItem("design-remix-skills");
+    if (confirm("إعادة تعيين جميع المهارات؟ سيتم حذف أي مهارات مخصصة.")) {
+      localStorage.removeItem("deepdive-skills");
       window.location.reload();
     }
   };
@@ -107,8 +107,8 @@ const AdminPanel = ({ open, onOpenChange }: AdminPanelProps) => {
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="text-2xl font-bold">Manage Skills</h1>
-                <p className="text-sm text-muted-foreground">Add, edit, or remove skills from the skill tree</p>
+                <h1 className="text-2xl font-bold">إدارة المهارات</h1>
+                <p className="text-sm text-muted-foreground">إضافة أو تعديل أو حذف المهارات من شجرة المهارات</p>
               </div>
               <div className="flex items-center gap-2">
                 <motion.button
@@ -118,7 +118,7 @@ const AdminPanel = ({ open, onOpenChange }: AdminPanelProps) => {
                   whileTap={{ scale: 0.98 }}
                 >
                   <RotateCcw className="w-4 h-4" />
-                  Reset
+                  إعادة تعيين
                 </motion.button>
                 <motion.button
                   onClick={() => onOpenChange(false)}
@@ -135,7 +135,7 @@ const AdminPanel = ({ open, onOpenChange }: AdminPanelProps) => {
               {/* Skills List */}
               <div className="bg-card rounded-xl p-4 border border-border">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="font-semibold">Skills ({skills.length})</h2>
+                  <h2 className="font-semibold">المهارات ({skills.length})</h2>
                   <motion.button
                     onClick={handleAddNew}
                     className="flex items-center gap-1 px-3 py-1.5 bg-turquoise text-turquoise-foreground rounded-lg text-sm font-medium"
@@ -143,7 +143,7 @@ const AdminPanel = ({ open, onOpenChange }: AdminPanelProps) => {
                     whileTap={{ scale: 0.98 }}
                   >
                     <Plus className="w-4 h-4" />
-                    Add Skill
+                    إضافة مهارة
                   </motion.button>
                 </div>
 
@@ -193,26 +193,26 @@ const AdminPanel = ({ open, onOpenChange }: AdminPanelProps) => {
               {/* Edit Form */}
               <div className="bg-card rounded-xl p-4 border border-border">
                 <h2 className="font-semibold mb-4">
-                  {isAdding ? "Add New Skill" : editingId !== null ? `Edit Skill #${editingId}` : "Select a skill to edit"}
+                  {isAdding ? "إضافة مهارة جديدة" : editingId !== null ? `تعديل المهارة #${editingId}` : "اختر مهارة للتعديل"}
                 </h2>
 
                 {(isAdding || editingId !== null) ? (
                   <div className="space-y-4">
                     {/* Title */}
                     <div>
-                      <label className="block text-sm font-medium mb-1">Title</label>
+                      <label className="block text-sm font-medium mb-1">العنوان</label>
                       <input
                         type="text"
                         value={formData.title}
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                         className="w-full px-3 py-2 bg-muted rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-turquoise/50"
-                        placeholder="Skill title"
+                        placeholder="عنوان المهارة"
                       />
                     </div>
 
                     {/* Status */}
                     <div>
-                      <label className="block text-sm font-medium mb-1">Status</label>
+                      <label className="block text-sm font-medium mb-1">الحالة</label>
                       <select
                         value={formData.status}
                         onChange={(e) => setFormData({ ...formData, status: e.target.value as SkillNode["status"] })}
@@ -227,7 +227,7 @@ const AdminPanel = ({ open, onOpenChange }: AdminPanelProps) => {
                     {/* Position */}
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-sm font-medium mb-1">X Position (%)</label>
+                        <label className="block text-sm font-medium mb-1">الموضع X (%)</label>
                         <input
                           type="number"
                           value={formData.x}
@@ -238,7 +238,7 @@ const AdminPanel = ({ open, onOpenChange }: AdminPanelProps) => {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium mb-1">Y Position (%)</label>
+                        <label className="block text-sm font-medium mb-1">الموضع Y (%)</label>
                         <input
                           type="number"
                           value={formData.y}
@@ -253,7 +253,7 @@ const AdminPanel = ({ open, onOpenChange }: AdminPanelProps) => {
                     {/* Icon & Size */}
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-sm font-medium mb-1">Icon</label>
+                        <label className="block text-sm font-medium mb-1">الأيقونة</label>
                         <select
                           value={formData.iconName}
                           onChange={(e) => setFormData({ ...formData, iconName: e.target.value })}
@@ -265,7 +265,7 @@ const AdminPanel = ({ open, onOpenChange }: AdminPanelProps) => {
                         </select>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium mb-1">Size</label>
+                        <label className="block text-sm font-medium mb-1">الحجم</label>
                         <select
                           value={formData.size}
                           onChange={(e) => setFormData({ ...formData, size: e.target.value as SkillNode["size"] })}
@@ -280,7 +280,7 @@ const AdminPanel = ({ open, onOpenChange }: AdminPanelProps) => {
 
                     {/* Color */}
                     <div>
-                      <label className="block text-sm font-medium mb-1">Color</label>
+                      <label className="block text-sm font-medium mb-1">اللون</label>
                       <select
                         value={formData.color}
                         onChange={(e) => setFormData({ ...formData, color: e.target.value })}
@@ -294,15 +294,15 @@ const AdminPanel = ({ open, onOpenChange }: AdminPanelProps) => {
 
                     {/* Connections */}
                     <div>
-                      <label className="block text-sm font-medium mb-1">Connections (comma-separated IDs)</label>
+                      <label className="block text-sm font-medium mb-1">الروابط (أرقام ID مفصولة بفواصل)</label>
                       <input
                         type="text"
                         value={connectionInput}
                         onChange={(e) => setConnectionInput(e.target.value)}
                         className="w-full px-3 py-2 bg-muted rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-turquoise/50"
-                        placeholder="e.g., 2, 3, 4"
+                        placeholder="مثال: 2, 3, 4"
                       />
-                      <p className="text-xs text-muted-foreground mt-1">Enter the IDs of skills this connects to</p>
+                      <p className="text-xs text-muted-foreground mt-1">أدخل أرقام المهارات المرتبطة</p>
                     </div>
 
                     {/* Actions */}
@@ -315,7 +315,7 @@ const AdminPanel = ({ open, onOpenChange }: AdminPanelProps) => {
                         whileTap={{ scale: 0.98 }}
                       >
                         <Save className="w-4 h-4" />
-                        {isAdding ? "Add Skill" : "Save Changes"}
+                        {isAdding ? "إضافة مهارة" : "حفظ التغييرات"}
                       </motion.button>
                       <motion.button
                         onClick={handleCancel}
@@ -323,14 +323,14 @@ const AdminPanel = ({ open, onOpenChange }: AdminPanelProps) => {
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
-                        Cancel
+                        إلغاء
                       </motion.button>
                     </div>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
                     <Edit2 className="w-8 h-8 mb-2 opacity-50" />
-                    <p className="text-sm">Click edit on a skill or add a new one</p>
+                    <p className="text-sm">انقر على تعديل لمهارة أو أضف واحدة جديدة</p>
                   </div>
                 )}
               </div>

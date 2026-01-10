@@ -39,15 +39,15 @@ const LessonCard = ({
       <div className={`h-full min-h-[240px] p-6 ${gradient} relative`}>
         {/* Lock Badge */}
         {isLocked && (
-          <div className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1 bg-background/20 backdrop-blur-sm rounded-full text-xs font-semibold">
+          <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1 bg-background/20 backdrop-blur-sm rounded-full text-xs font-semibold">
             <Lock className="w-3 h-3" />
-            Locked
+            مقفل
           </div>
         )}
 
         {/* Tag */}
         {tag && (
-          <div className="absolute top-4 left-4 px-3 py-1 bg-foreground/20 backdrop-blur-sm rounded-full text-xs font-semibold">
+          <div className="absolute top-4 right-4 px-3 py-1 bg-foreground/20 backdrop-blur-sm rounded-full text-xs font-semibold">
             {tag}
           </div>
         )}
@@ -73,13 +73,13 @@ const LessonCard = ({
             {videoCount !== undefined && (
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-background/20 px-2 py-1 rounded-full">
                 <Video className="w-3 h-3" />
-                {videoCount} videos
+                {videoCount} تمارين صوتية
               </div>
             )}
             {lessonCount !== undefined && (
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-background/20 px-2 py-1 rounded-full">
                 <Play className="w-3 h-3" />
-                {lessonCount} lessons
+                {lessonCount} دروس
               </div>
             )}
           </div>

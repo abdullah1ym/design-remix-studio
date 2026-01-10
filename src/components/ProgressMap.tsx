@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Lock, Play, Star, Zap, Anchor, Fish, Shell, Waves, X, Compass, Globe } from "lucide-react";
+import { Check, Lock, Play, Star, Volume2, Music, Ear, Type, MessageCircle, MessageSquare, Users, TreePine, Radio, Award, X } from "lucide-react";
 import { useSkills, SkillNode } from "@/contexts/SkillsContext";
 
 interface ProgressMapProps {
@@ -8,14 +8,17 @@ interface ProgressMapProps {
 }
 
 const iconMap: Record<string, React.ReactNode> = {
-  Anchor: <Anchor className="w-4 h-4" />,
-  Fish: <Fish className="w-4 h-4" />,
-  Waves: <Waves className="w-4 h-4" />,
-  Shell: <Shell className="w-4 h-4" />,
-  Zap: <Zap className="w-4 h-4" />,
+  Volume2: <Volume2 className="w-4 h-4" />,
+  Music: <Music className="w-4 h-4" />,
+  Ear: <Ear className="w-4 h-4" />,
+  Type: <Type className="w-4 h-4" />,
+  MessageCircle: <MessageCircle className="w-4 h-4" />,
+  MessageSquare: <MessageSquare className="w-4 h-4" />,
+  Users: <Users className="w-4 h-4" />,
+  TreePine: <TreePine className="w-4 h-4" />,
+  Radio: <Radio className="w-4 h-4" />,
+  Award: <Award className="w-4 h-4" />,
   Star: <Star className="w-4 h-4" />,
-  Compass: <Compass className="w-4 h-4" />,
-  Globe: <Globe className="w-4 h-4" />,
 };
 
 const getIcon = (iconName: string) => iconMap[iconName] || <Star className="w-4 h-4" />;
@@ -72,10 +75,10 @@ const ProgressMap = ({ open, onOpenChange }: ProgressMapProps) => {
           {/* Header */}
           <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between p-6 bg-gradient-to-b from-background via-background/80 to-transparent">
             <div className="flex items-center gap-3">
-              <Star className="w-6 h-6 text-yellow" />
-              <h1 className="text-2xl font-bold">Skill Tree</h1>
+              <Award className="w-6 h-6 text-yellow" />
+              <h1 className="text-2xl font-bold">شجرة المهارات</h1>
               <span className="text-sm text-muted-foreground">
-                {completedCount}/{totalCount} skills unlocked
+                {completedCount}/{totalCount} مهارة مكتملة
               </span>
             </div>
             <motion.button
@@ -215,10 +218,10 @@ const ProgressMap = ({ open, onOpenChange }: ProgressMapProps) => {
                     }`}>
                       {node.title}
                       {node.status === "current" && (
-                        <span className="block text-[10px] opacity-80">In Progress</span>
+                        <span className="block text-[10px] opacity-80">قيد التقدم</span>
                       )}
                       {node.status === "locked" && (
-                        <span className="block text-[10px] opacity-60">Locked</span>
+                        <span className="block text-[10px] opacity-60">مقفل</span>
                       )}
                     </div>
                   </div>
@@ -227,39 +230,39 @@ const ProgressMap = ({ open, onOpenChange }: ProgressMapProps) => {
             })}
 
             {/* Legend */}
-            <div className="absolute bottom-4 left-4 flex items-center gap-4 bg-card/80 backdrop-blur-sm rounded-xl p-3 text-xs">
+            <div className="absolute bottom-4 right-4 flex items-center gap-4 bg-card/80 backdrop-blur-sm rounded-xl p-3 text-xs">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-turquoise" />
-                <span>Completed</span>
+                <span>مكتمل</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-yellow" />
-                <span>Current</span>
+                <span>حالي</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-muted/80 ring-1 ring-foreground/20" />
-                <span>Available</span>
+                <span>متاح</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-muted/40" />
-                <span>Locked</span>
+                <span>مقفل</span>
               </div>
             </div>
 
             {/* XP Progress */}
-            <div className="absolute bottom-4 right-4 bg-card/80 backdrop-blur-sm rounded-xl p-3">
+            <div className="absolute bottom-4 left-4 bg-card/80 backdrop-blur-sm rounded-xl p-3">
               <div className="flex items-center gap-3">
-                <div className="text-right">
-                  <p className="text-xs text-muted-foreground">Experience</p>
-                  <p className="text-sm font-bold text-yellow">450 / 1000 XP</p>
-                </div>
-                <motion.button 
+                <motion.button
                   className="px-4 py-2 bg-yellow text-yellow-foreground rounded-lg text-sm font-semibold"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Continue
+                  استمر
                 </motion.button>
+                <div className="text-left">
+                  <p className="text-xs text-muted-foreground">الخبرة</p>
+                  <p className="text-sm font-bold text-yellow">٤٥٠ / ١٠٠٠ نقطة</p>
+                </div>
               </div>
             </div>
           </div>

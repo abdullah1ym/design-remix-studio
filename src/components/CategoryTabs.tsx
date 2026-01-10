@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Fish, Anchor, Shell, Waves, Heart } from "lucide-react";
+import { Music, Volume2, MessageCircle, TreePine, Award } from "lucide-react";
 
 interface CategoryTabsProps {
   activeCategory: string;
@@ -7,11 +7,11 @@ interface CategoryTabsProps {
 }
 
 const categories = [
-  { id: "coral-reefs", label: "Coral Reefs", icon: Shell, color: "coral" },
-  { id: "deep-sea", label: "Deep Sea", icon: Anchor, color: "primary" },
-  { id: "marine-life", label: "Marine Life", icon: Fish, color: "turquoise" },
-  { id: "ocean-waves", label: "Ocean Waves", icon: Waves, color: "mint" },
-  { id: "conservation", label: "Conservation", icon: Heart, color: "jellyfish" },
+  { id: "tones", label: "تمييز النغمات", icon: Music, color: "coral" },
+  { id: "words", label: "الكلمات والمقاطع", icon: Volume2, color: "primary" },
+  { id: "sentences", label: "الجمل والحوارات", icon: MessageCircle, color: "turquoise" },
+  { id: "environment", label: "الأصوات البيئية", icon: TreePine, color: "mint" },
+  { id: "advanced", label: "التدريب المتقدم", icon: Award, color: "jellyfish" },
 ];
 
 const CategoryTabs = ({ activeCategory, onCategoryChange }: CategoryTabsProps) => {
