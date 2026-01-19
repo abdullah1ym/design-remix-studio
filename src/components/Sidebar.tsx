@@ -22,9 +22,12 @@ interface SidebarProps {
 const menuItems = [
   { id: "home", icon: Home, label: "الرئيسية", group: "الرئيسية" },
   { id: "exercises", icon: Headphones, label: "التمارين", group: "الرئيسية" },
-  { id: "progress", icon: BarChart3, label: "التقدم", group: "الرئيسية" },
-  { id: "settings", icon: Settings, label: "الإعدادات", group: "الرئيسية" },
-  { id: "help", icon: HelpCircle, label: "المساعدة", group: "الرئيسية" },
+];
+
+const bottomItems = [
+  { id: "progress", icon: BarChart3, label: "التقدم", group: "أخرى" },
+  { id: "settings", icon: Settings, label: "الإعدادات", group: "أخرى" },
+  { id: "help", icon: HelpCircle, label: "المساعدة", group: "أخرى" },
 ];
 
 const guideItems = [
@@ -82,9 +85,25 @@ const Sidebar = ({ activeSection, onSectionChange }: SidebarProps) => {
       </div>
 
       {/* Resources Section */}
-      <div className="flex flex-col items-center gap-1">
+      <div className="flex flex-col items-center gap-1 mb-6">
         <span className="text-[10px] text-muted-foreground font-semibold tracking-wider mb-2">الموارد</span>
         {resourceItems.map((item) => (
+          <SidebarButton
+            key={item.id}
+            icon={item.icon}
+            label={item.label}
+            isActive={activeSection === item.id}
+            onClick={() => onSectionChange(item.id)}
+          />
+        ))}
+      </div>
+
+      {/* Spacer to push bottom items down */}
+      <div className="flex-1" />
+
+      {/* Bottom Section - Progress, Settings, Help */}
+      <div className="flex flex-col items-center gap-1 mb-4">
+        {bottomItems.map((item) => (
           <SidebarButton
             key={item.id}
             icon={item.icon}
