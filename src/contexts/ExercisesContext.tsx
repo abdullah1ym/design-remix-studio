@@ -14,7 +14,7 @@ export interface Exercise {
   description: string;
   category: string;
   difficulty: "beginner" | "intermediate" | "advanced";
-  type: "tone" | "word" | "sentence" | "environment";
+  type: "tone" | "word" | "sentence";
   duration: string;
   questions: Question[];
 }
@@ -907,29 +907,9 @@ const defaultExercises: Exercise[] = [
       { id: "s8", prompt: "ما الجملة التي سمعتها؟", audioPlaceholder: "الطفل نائم", options: ["الظفل نائم", "الطفل نائم"], correctAnswer: 1 },
     ],
   },
-  // === تمارين أصوات البيئة ===
-  {
-    id: "env-1",
-    title: "أصوات المنزل",
-    description: "تعرف على الأصوات اليومية في المنزل",
-    category: "environment",
-    difficulty: "beginner",
-    type: "environment",
-    duration: "٤ دقائق",
-    questions: [
-      { id: "e1", prompt: "ما الصوت الذي سمعته؟", audioPlaceholder: "جرس الباب", options: ["جرس الباب", "رنين الهاتف"], correctAnswer: 0 },
-      { id: "e2", prompt: "ما الصوت الذي سمعته؟", audioPlaceholder: "رنين الهاتف", options: ["جرس الباب", "رنين الهاتف"], correctAnswer: 1 },
-      { id: "e3", prompt: "ما الصوت الذي سمعته؟", audioPlaceholder: "صوت الماء", options: ["صوت الماء", "صوت المطر"], correctAnswer: 0 },
-      { id: "e4", prompt: "ما الصوت الذي سمعته؟", audioPlaceholder: "المنبه", options: ["التلفاز", "المنبه"], correctAnswer: 1 },
-      { id: "e5", prompt: "ما الصوت الذي سمعته؟", audioPlaceholder: "الغسالة", options: ["الغسالة", "المكيف"], correctAnswer: 0 },
-      { id: "e6", prompt: "ما الصوت الذي سمعته؟", audioPlaceholder: "الميكروويف", options: ["الفرن", "الميكروويف"], correctAnswer: 1 },
-      { id: "e7", prompt: "ما الصوت الذي سمعته؟", audioPlaceholder: "طرق الباب", options: ["طرق الباب", "إغلاق النافذة"], correctAnswer: 0 },
-      { id: "e8", prompt: "ما الصوت الذي سمعته؟", audioPlaceholder: "صوت المكنسة", options: ["الغسالة", "صوت المكنسة"], correctAnswer: 1 },
-    ],
-  },
 ];
 
-const STORAGE_KEY = "deepdive-exercises-v5";
+const STORAGE_KEY = "deepdive-exercises-v6";
 
 const ExercisesContext = createContext<ExercisesContextType | undefined>(undefined);
 

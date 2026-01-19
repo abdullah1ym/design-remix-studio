@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Music, Volume2, MessageCircle, TreePine, Award } from "lucide-react";
+import { Music, Volume2, MessageCircle, Award } from "lucide-react";
 
 interface CategoryTabsProps {
   activeCategory: string;
@@ -8,9 +8,8 @@ interface CategoryTabsProps {
 
 const categories = [
   { id: "tones", label: "تمييز النغمات", icon: Music, color: "coral" },
-  { id: "words", label: "الكلمات والمقاطع", icon: Volume2, color: "primary" },
+  { id: "words", label: "الكلمات والمقاطع", icon: Volume2, color: "yellow" },
   { id: "sentences", label: "الجمل والحوارات", icon: MessageCircle, color: "turquoise" },
-  { id: "environment", label: "الأصوات البيئية", icon: TreePine, color: "mint" },
   { id: "advanced", label: "التدريب المتقدم", icon: Award, color: "jellyfish" },
 ];
 
@@ -28,17 +27,15 @@ const CategoryTabs = ({ activeCategory, onCategoryChange }: CategoryTabsProps) =
         
         const gradientClasses: Record<string, string> = {
           coral: "gradient-coral text-coral-foreground",
-          primary: "gradient-ocean text-foreground",
+          yellow: "gradient-yellow text-yellow-foreground",
           turquoise: "gradient-turquoise text-turquoise-foreground",
-          mint: "gradient-mint text-mint-foreground",
           jellyfish: "gradient-jellyfish text-jellyfish-foreground",
         };
 
         const iconBgClasses: Record<string, string> = {
           coral: "bg-coral/20",
-          primary: "bg-primary/20",
+          yellow: "bg-yellow/20",
           turquoise: "bg-turquoise/20",
-          mint: "bg-mint/20",
           jellyfish: "bg-jellyfish/20",
         };
         
