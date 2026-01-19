@@ -21,19 +21,19 @@ interface SkillsContextType {
 }
 
 const defaultSkills: SkillNode[] = [
-  { id: 1, title: "الأصوات الأساسية", status: "completed", x: 50, y: 85, iconName: "Volume2", color: "turquoise", size: "large", connections: [2, 3] },
-  { id: 2, title: "النغمات العالية والمنخفضة", status: "completed", x: 30, y: 65, iconName: "Music", color: "turquoise", size: "medium", connections: [4, 5] },
-  { id: 3, title: "التمييز بين الأصوات", status: "completed", x: 70, y: 65, iconName: "Ear", color: "turquoise", size: "medium", connections: [5, 6] },
-  { id: 4, title: "الحروف العربية", status: "current", x: 15, y: 45, iconName: "Type", color: "yellow", size: "medium", connections: [7] },
-  { id: 5, title: "الكلمات البسيطة", status: "available", x: 50, y: 45, iconName: "MessageCircle", color: "muted", size: "large", connections: [7, 8, 9] },
-  { id: 6, title: "الجمل القصيرة", status: "available", x: 85, y: 45, iconName: "MessageSquare", color: "muted", size: "medium", connections: [9] },
-  { id: 7, title: "المحادثات", status: "locked", x: 25, y: 25, iconName: "Users", color: "muted", size: "medium", connections: [10] },
-  { id: 8, title: "الأصوات اليومية", status: "locked", x: 50, y: 20, iconName: "TreePine", color: "muted", size: "small", connections: [10] },
-  { id: 9, title: "البيئة المعقدة", status: "locked", x: 75, y: 25, iconName: "Radio", color: "muted", size: "medium", connections: [10] },
-  { id: 10, title: "الإتقان", status: "locked", x: 50, y: 5, iconName: "Award", color: "jellyfish", size: "large", connections: [] },
+  { id: 1, title: "الأصوات الأساسية", status: "completed", x: 50, y: 10, iconName: "Volume2", color: "turquoise", size: "large", connections: [2, 3] },
+  { id: 2, title: "النغمات العالية والمنخفضة", status: "completed", x: 30, y: 28, iconName: "Music", color: "turquoise", size: "medium", connections: [4, 5] },
+  { id: 3, title: "التمييز بين الأصوات", status: "completed", x: 70, y: 28, iconName: "Ear", color: "turquoise", size: "medium", connections: [5, 6] },
+  { id: 4, title: "الحروف العربية", status: "current", x: 15, y: 48, iconName: "Type", color: "yellow", size: "medium", connections: [7] },
+  { id: 5, title: "الكلمات البسيطة", status: "available", x: 50, y: 48, iconName: "MessageCircle", color: "muted", size: "large", connections: [7, 8, 9] },
+  { id: 6, title: "الجمل القصيرة", status: "available", x: 85, y: 48, iconName: "MessageSquare", color: "muted", size: "medium", connections: [9] },
+  { id: 7, title: "المحادثات", status: "locked", x: 25, y: 68, iconName: "Users", color: "muted", size: "medium", connections: [10] },
+  { id: 8, title: "الأصوات اليومية", status: "locked", x: 50, y: 75, iconName: "TreePine", color: "muted", size: "small", connections: [10] },
+  { id: 9, title: "البيئة المعقدة", status: "locked", x: 75, y: 68, iconName: "Radio", color: "muted", size: "medium", connections: [10] },
+  { id: 10, title: "الإتقان", status: "locked", x: 50, y: 90, iconName: "Award", color: "jellyfish", size: "large", connections: [] },
 ];
 
-const STORAGE_KEY = "deepdive-skills";
+const STORAGE_KEY = "deepdive-skills-v3";
 
 const SkillsContext = createContext<SkillsContextType | undefined>(undefined);
 

@@ -85,7 +85,7 @@ const Index = () => {
             ) : activeSection === "lessons" ? (
               <LessonsView />
             ) : activeSection === "skillmap" ? (
-              <SkillMapView />
+              <SkillMapView onBack={() => setActiveSection("home")} />
             ) : activeSection === "achievements" ? (
               <AchievementsView />
             ) : activeSection === "favorites" ? (

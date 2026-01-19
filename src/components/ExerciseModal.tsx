@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Volume2, Play, CheckCircle, XCircle, RotateCcw, ChevronLeft } from "lucide-react";
-import { Exercise, Question } from "@/contexts/ExercisesContext";
+import { X, Volume2, Play, CheckCircle, XCircle, RotateCcw, ChevronRight, Zap, Lock } from "lucide-react";
+import { Exercise } from "@/contexts/ExercisesContext";
 
 interface ExerciseModalProps {
   exercise: Exercise | null;
@@ -11,48 +12,129 @@ interface ExerciseModalProps {
 
 const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [showResult, setShowResult] = useState(false);
-  const [score, setScore] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [answers, setAnswers] = useState<Record<number, number | null>>({});
+  const [revealedCount, setRevealedCount] = useState(1);
   const [completed, setCompleted] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const questionRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Load voices when available
+  useEffect(() => {
+    const loadVoices = () => {
+      const availableVoices = window.speechSynthesis.getVoices();
+      setVoices(availableVoices);
+    };
+
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+
+    return () => {
+      window.speechSynthesis.onvoiceschanged = null;
+    };
+  }, []);
 
   if (!exercise) return null;
 
-  const question = exercise.questions[currentQuestion];
-  const isLastQuestion = currentQuestion === exercise.questions.length - 1;
-  const isCorrect = selectedAnswer === question.correctAnswer;
-
-  const handlePlayAudio = () => {
-    setIsPlaying(true);
-    // Simulate audio playing
-    setTimeout(() => setIsPlaying(false), 2000);
-  };
-
-  const handleSelectAnswer = (index: number) => {
-    if (showResult) return;
-    setSelectedAnswer(index);
-    setShowResult(true);
-    if (index === question.correctAnswer) {
-      setScore(score + 1);
+  const answeredCount = Object.values(answers).filter(a => a !== null).length;
+  const score = Object.entries(answers).reduce((acc, [qIndex, answerIndex]) => {
+    const question = exercise.questions[parseInt(qIndex)];
+    if (question && answerIndex === question.correctAnswer) {
+      return acc + 1;
     }
-  };
+    return acc;
+  }, 0);
 
-  const handleNext = () => {
-    if (isLastQuestion) {
-      setCompleted(true);
+  const handlePlayAudio = (text?: string) => {
+    if (isPlaying) return;
+
+    const question = exercise.questions[Object.keys(answers).length < exercise.questions.length
+      ? Math.max(0, revealedCount - 1)
+      : 0];
+    const textToSpeak = text || question?.audioPlaceholder || "";
+
+    if (!textToSpeak) {
+      console.warn("No text to speak");
+      return;
+    }
+
+    if ('speechSynthesis' in window) {
+      // Cancel any ongoing speech
+      window.speechSynthesis.cancel();
+
+      // Chrome workaround: resume if paused
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
+
+      const utterance = new SpeechSynthesisUtterance(textToSpeak);
+      utterance.lang = 'ar-SA';
+      utterance.rate = 0.6; // Slower for clarity
+      utterance.pitch = 1;
+      utterance.volume = 1;
+
+      // Find Arabic voice - try multiple patterns
+      const currentVoices = voices.length > 0 ? voices : window.speechSynthesis.getVoices();
+      const arabicVoice = currentVoices.find(voice =>
+        voice.lang.startsWith('ar') ||
+        voice.lang.includes('AR') ||
+        voice.name.toLowerCase().includes('arab')
+      );
+
+      if (arabicVoice) {
+        utterance.voice = arabicVoice;
+      }
+
+      setIsPlaying(true);
+
+      utterance.onend = () => {
+        setIsPlaying(false);
+      };
+
+      utterance.onerror = (e) => {
+        console.error("Speech error:", e);
+        setIsPlaying(false);
+      };
+
+      // Small delay to ensure speech synthesis is ready
+      setTimeout(() => {
+        window.speechSynthesis.speak(utterance);
+      }, 50);
     } else {
-      setCurrentQuestion(currentQuestion + 1);
-      setSelectedAnswer(null);
-      setShowResult(false);
+      console.warn("Speech synthesis not supported");
+      setIsPlaying(true);
+      setTimeout(() => setIsPlaying(false), 1000);
     }
+  };
+
+  const handleSelectAnswer = (qIndex: number, answerIndex: number) => {
+    if (answers[qIndex] !== undefined) return;
+
+    setAnswers(prev => ({ ...prev, [qIndex]: answerIndex }));
+
+    // Reveal next question
+    if (qIndex + 1 < exercise.questions.length && qIndex + 1 >= revealedCount) {
+      setTimeout(() => {
+        setRevealedCount(prev => Math.max(prev, qIndex + 2));
+        setTimeout(() => {
+          questionRefs.current[qIndex + 1]?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+          });
+        }, 100);
+      }, 400);
+    }
+  };
+
+  const handleSubmit = () => {
+    setCompleted(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleRestart = () => {
     setCurrentQuestion(0);
-    setSelectedAnswer(null);
-    setShowResult(false);
-    setScore(0);
+    setAnswers({});
+    setRevealedCount(1);
     setCompleted(false);
   };
 
@@ -61,224 +143,287 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
     onClose();
   };
 
-  return (
+  const xpEarned = completed ? (score * 10) + 25 : 0;
+
+  return createPortal(
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex items-center justify-center p-4"
+          className="bg-background overflow-auto"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: '5rem',
+            bottom: 0,
+            height: '100vh',
+            zIndex: 9999,
+          }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <motion.div
-            className="bg-card rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl"
-            initial={{ scale: 0.9, y: 20 }}
-            animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.9, y: 20 }}
-          >
+          <div className="max-w-4xl mx-auto pb-8 px-4">
             {/* Header */}
-            <div className="p-6 border-b border-border flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={handleClose}
-                  className="p-2 hover:bg-muted rounded-lg transition-colors"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <div>
-                  <h2 className="text-xl font-bold">{exercise.title}</h2>
-                  <p className="text-sm text-muted-foreground">{exercise.description}</p>
-                </div>
-              </div>
+            <motion.div
+              className="flex items-center gap-3 mb-6 sticky top-4 bg-card/95 backdrop-blur-sm py-4 px-4 z-20 rounded-3xl shadow-sm border border-border/50"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
               <button
                 onClick={handleClose}
                 className="p-2 hover:bg-muted rounded-full transition-colors"
               >
-                <X className="w-5 h-5" />
+                <ChevronRight className="w-6 h-6" />
               </button>
-            </div>
+              <div className="flex items-center gap-3 flex-1 min-w-0">
+                <div className="w-10 h-10 rounded-2xl bg-primary/20 flex items-center justify-center flex-shrink-0">
+                  <Volume2 className="w-5 h-5 text-primary" />
+                </div>
+                <div className="min-w-0">
+                  <h1 className="text-xl font-bold truncate">{exercise.title}</h1>
+                  <p className="text-xs text-muted-foreground truncate">{exercise.description}</p>
+                </div>
+              </div>
+              <div className="flex-shrink-0 text-center min-w-[60px]">
+                <p className="text-xs text-muted-foreground">التقدم</p>
+                <p className="text-base font-bold">{answeredCount}/{exercise.questions.length}</p>
+              </div>
+            </motion.div>
 
             {/* Progress Bar */}
-            <div className="px-6 py-3 bg-muted/30">
-              <div className="flex items-center justify-between text-sm mb-2">
-                <span>السؤال {currentQuestion + 1} من {exercise.questions.length}</span>
-                <span className="text-turquoise font-medium">النتيجة: {score}/{exercise.questions.length}</span>
-              </div>
+            <motion.div
+              className="mb-6"
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+            >
               <div className="h-2 bg-muted rounded-full overflow-hidden">
                 <motion.div
-                  className="h-full bg-turquoise"
+                  className="h-full bg-gradient-to-l from-primary to-yellow shadow-lg shadow-primary/50 rounded-full"
                   initial={{ width: 0 }}
-                  animate={{ width: `${((currentQuestion + (showResult ? 1 : 0)) / exercise.questions.length) * 100}%` }}
+                  animate={{ width: `${(answeredCount / exercise.questions.length) * 100}%` }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
                 />
               </div>
-            </div>
+            </motion.div>
 
-            {/* Content */}
-            <div className="p-6">
-              {!completed ? (
-                <>
-                  {/* Question */}
-                  <div className="text-center mb-8">
-                    <p className="text-lg font-medium mb-6">{question.prompt}</p>
+            {/* Results Banner */}
+            {completed && (() => {
+              const percentage = (score / exercise.questions.length) * 100;
+              const gradeColor = percentage >= 80 ? 'green' : percentage >= 50 ? 'yellow' : 'red';
+              const bgClass = gradeColor === 'green'
+                ? 'from-green-500/20 to-primary/20'
+                : gradeColor === 'yellow'
+                ? 'from-yellow-500/20 to-primary/20'
+                : 'from-red-500/20 to-primary/20';
+              const textClass = gradeColor === 'green'
+                ? 'text-green-500'
+                : gradeColor === 'yellow'
+                ? 'text-yellow-500'
+                : 'text-red-500';
 
-                    {/* Audio Player Placeholder */}
+              return (
+                <motion.div
+                  className={`bg-gradient-to-l ${bgClass} rounded-3xl p-6 mb-6`}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-xl font-bold mb-1">النتيجة</h2>
+                      <p className={`text-4xl font-bold ${textClass}`}>{score}/{exercise.questions.length}</p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {score === exercise.questions.length
+                          ? "ممتاز! إجابات صحيحة بالكامل"
+                          : score >= exercise.questions.length / 2
+                          ? "جيد جداً! استمر في التدريب"
+                          : "حاول مرة أخرى للتحسن"}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 bg-yellow/20 px-4 py-2 rounded-2xl">
+                      <Zap className="w-6 h-6 text-yellow" />
+                      <span className="text-xl font-bold text-yellow">+{xpEarned} XP</span>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })()}
+
+            {/* Questions - Progressive Mode */}
+            <div className="space-y-4">
+              <AnimatePresence mode="popLayout">
+                {exercise.questions.map((question, qIndex) => {
+                  const selectedAnswer = answers[qIndex];
+                  const isRevealed = qIndex < revealedCount || completed;
+                  const isAnswered = selectedAnswer !== undefined && selectedAnswer !== null;
+                  const isCorrect = selectedAnswer === question.correctAnswer;
+                  const isLatest = qIndex === revealedCount - 1 && !completed;
+
+                  if (!isRevealed) return null;
+
+                  return (
                     <motion.div
-                      className="inline-flex flex-col items-center gap-4 p-6 bg-muted/50 rounded-2xl"
-                      whileHover={{ scale: 1.02 }}
+                      key={question.id || qIndex}
+                      ref={el => questionRefs.current[qIndex] = el}
+                      className={`bg-card rounded-3xl overflow-hidden ${
+                        isLatest ? "ring-2 ring-primary/50 shadow-lg" : ""
+                      }`}
+                      initial={{ opacity: 0, y: 50, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
                     >
-                      <motion.button
-                        onClick={handlePlayAudio}
-                        className={`w-20 h-20 rounded-full flex items-center justify-center transition-colors ${
-                          isPlaying ? "bg-turquoise" : "bg-primary hover:bg-primary/80"
-                        }`}
-                        animate={isPlaying ? { scale: [1, 1.1, 1] } : {}}
-                        transition={{ duration: 0.5, repeat: isPlaying ? Infinity : 0 }}
-                      >
-                        {isPlaying ? (
-                          <Volume2 className="w-8 h-8 text-turquoise-foreground" />
-                        ) : (
-                          <Play className="w-8 h-8 text-primary-foreground mr-[-4px]" />
+                      <div className="p-8">
+                        <div className="flex items-start gap-4 mb-6">
+                          <span className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold ${
+                            isAnswered
+                              ? isCorrect ? "bg-green-500/20 text-green-500" : "bg-red-500/20 text-red-400"
+                              : "bg-primary text-primary-foreground"
+                          }`}>
+                            {isAnswered ? (
+                              isCorrect ? <CheckCircle className="w-6 h-6" /> : <XCircle className="w-6 h-6" />
+                            ) : qIndex + 1}
+                          </span>
+                          <p className="text-xl font-medium pt-2">{question.prompt}</p>
+                        </div>
+
+                        {/* Audio Player */}
+                        <div className="flex justify-center mb-6">
+                          <motion.button
+                            onClick={() => handlePlayAudio(question.audioPlaceholder)}
+                            className={`w-16 h-16 rounded-full flex items-center justify-center transition-colors ${
+                              isPlaying ? "bg-primary/80" : "bg-primary hover:bg-primary/80"
+                            }`}
+                            animate={isPlaying ? { scale: [1, 1.1, 1] } : {}}
+                            transition={{ duration: 0.5, repeat: isPlaying ? Infinity : 0 }}
+                          >
+                            {isPlaying ? (
+                              <Volume2 className="w-7 h-7 text-primary-foreground" />
+                            ) : (
+                              <Play className="w-7 h-7 text-primary-foreground mr-[-2px]" />
+                            )}
+                          </motion.button>
+                        </div>
+
+                        {/* Options */}
+                        <div className="grid grid-cols-2 gap-3 mr-16">
+                          {question.options.map((option, optIndex) => {
+                            const isSelected = selectedAnswer === optIndex;
+                            const isCorrectOption = optIndex === question.correctAnswer;
+                            let buttonStyle = "bg-muted hover:bg-muted/80 border-transparent";
+                            if (isAnswered) {
+                              if (isCorrectOption) buttonStyle = "bg-green-500/20 border-green-500 text-green-500";
+                              else if (isSelected) buttonStyle = "bg-red-500/20 border-red-500 text-red-400";
+                              else buttonStyle = "bg-muted/50 border-transparent opacity-50";
+                            }
+
+                            return (
+                              <motion.button
+                                key={optIndex}
+                                onClick={() => handleSelectAnswer(qIndex, optIndex)}
+                                className={`p-4 rounded-2xl text-right font-medium border-2 transition-all min-h-[60px] flex items-center justify-end ${buttonStyle}`}
+                                whileHover={!isAnswered ? { scale: 1.02 } : {}}
+                                whileTap={!isAnswered ? { scale: 0.98 } : {}}
+                                disabled={isAnswered}
+                              >
+                                <span className="flex items-center gap-2">
+                                  {isAnswered && isCorrectOption && <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />}
+                                  {isAnswered && isSelected && !isCorrectOption && <XCircle className="w-5 h-5 text-red-400 flex-shrink-0" />}
+                                  {option}
+                                </span>
+                              </motion.button>
+                            );
+                          })}
+                        </div>
+
+                        {/* Result Message */}
+                        {isAnswered && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className={`mt-6 p-4 rounded-2xl text-center ${
+                              isCorrect ? "bg-green-500/20 text-green-500" : "bg-red-500/20 text-red-400"
+                            }`}
+                          >
+                            <p className="font-bold text-lg">
+                              {isCorrect ? "إجابة صحيحة!" : "إجابة خاطئة"}
+                            </p>
+                            {!isCorrect && (
+                              <p className="text-sm mt-1">
+                                الإجابة الصحيحة: {question.options[question.correctAnswer]}
+                              </p>
+                            )}
+                          </motion.div>
                         )}
-                      </motion.button>
-                      <div className="text-center">
-                        <p className="text-sm text-muted-foreground">اضغط للاستماع</p>
-                        <p className="text-xs text-muted-foreground/60 mt-1">
-                          [{question.audioPlaceholder}]
-                        </p>
                       </div>
                     </motion.div>
-                  </div>
+                  );
+                })}
+              </AnimatePresence>
 
-                  {/* Options */}
-                  <div className="grid grid-cols-2 gap-3">
-                    {question.options.map((option, index) => {
-                      const isSelected = selectedAnswer === index;
-                      const isCorrectOption = index === question.correctAnswer;
-
-                      let buttonStyle = "bg-muted hover:bg-muted/80 border-transparent";
-                      if (showResult) {
-                        if (isCorrectOption) {
-                          buttonStyle = "bg-turquoise/20 border-turquoise text-turquoise";
-                        } else if (isSelected && !isCorrectOption) {
-                          buttonStyle = "bg-red-500/20 border-red-500 text-red-400";
-                        } else {
-                          buttonStyle = "bg-muted/50 border-transparent opacity-50";
-                        }
-                      } else if (isSelected) {
-                        buttonStyle = "bg-primary/20 border-primary";
-                      }
-
-                      return (
-                        <motion.button
-                          key={index}
-                          onClick={() => handleSelectAnswer(index)}
-                          className={`p-4 rounded-xl text-center font-medium border-2 transition-all ${buttonStyle}`}
-                          whileHover={!showResult ? { scale: 1.02 } : {}}
-                          whileTap={!showResult ? { scale: 0.98 } : {}}
-                        >
-                          <span className="flex items-center justify-center gap-2">
-                            {showResult && isCorrectOption && (
-                              <CheckCircle className="w-5 h-5 text-turquoise" />
-                            )}
-                            {showResult && isSelected && !isCorrectOption && (
-                              <XCircle className="w-5 h-5 text-red-400" />
-                            )}
-                            {option}
-                          </span>
-                        </motion.button>
-                      );
-                    })}
-                  </div>
-
-                  {/* Result Message */}
-                  {showResult && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className={`mt-6 p-4 rounded-xl text-center ${
-                        isCorrect ? "bg-turquoise/20 text-turquoise" : "bg-red-500/20 text-red-400"
-                      }`}
-                    >
-                      <p className="font-bold text-lg">
-                        {isCorrect ? "إجابة صحيحة!" : "إجابة خاطئة"}
-                      </p>
-                      {!isCorrect && (
-                        <p className="text-sm mt-1">
-                          الإجابة الصحيحة: {question.options[question.correctAnswer]}
-                        </p>
-                      )}
-                    </motion.div>
-                  )}
-
-                  {/* Next Button */}
-                  {showResult && (
-                    <motion.button
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      onClick={handleNext}
-                      className="w-full mt-6 py-3 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-colors"
-                    >
-                      {isLastQuestion ? "عرض النتيجة" : "السؤال التالي"}
-                    </motion.button>
-                  )}
-                </>
-              ) : (
-                /* Completion Screen */
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-8"
-                >
-                  <motion.div
-                    className="w-24 h-24 mx-auto mb-6 rounded-full bg-turquoise/20 flex items-center justify-center"
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    <CheckCircle className="w-12 h-12 text-turquoise" />
-                  </motion.div>
-
-                  <h3 className="text-2xl font-bold mb-2">أحسنت!</h3>
-                  <p className="text-muted-foreground mb-6">لقد أكملت التمرين</p>
-
-                  <div className="bg-muted/50 rounded-xl p-6 mb-6">
-                    <p className="text-4xl font-bold text-turquoise mb-2">
-                      {score}/{exercise.questions.length}
-                    </p>
-                    <p className="text-muted-foreground">
-                      {score === exercise.questions.length
-                        ? "ممتاز! إجابات صحيحة بالكامل"
-                        : score >= exercise.questions.length / 2
-                        ? "جيد جداً! استمر في التدريب"
-                        : "حاول مرة أخرى للتحسن"}
-                    </p>
-                  </div>
-
-                  <div className="flex gap-3">
-                    <motion.button
-                      onClick={handleRestart}
-                      className="flex-1 py-3 bg-muted hover:bg-muted/80 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <RotateCcw className="w-5 h-5" />
-                      إعادة التمرين
-                    </motion.button>
-                    <motion.button
-                      onClick={handleClose}
-                      className="flex-1 py-3 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-colors"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      إنهاء
-                    </motion.button>
-                  </div>
+              {!completed && revealedCount < exercise.questions.length && (
+                <motion.div className="flex items-center justify-center gap-3 py-8 text-muted-foreground">
+                  <Lock className="w-5 h-5" />
+                  <span>{exercise.questions.length - revealedCount} أسئلة متبقية</span>
                 </motion.div>
               )}
             </div>
-          </motion.div>
+
+            {/* Submit Button */}
+            {!completed && (
+              <motion.div
+                className="sticky bottom-4 mt-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <motion.button
+                  onClick={handleSubmit}
+                  disabled={answeredCount < exercise.questions.length}
+                  className={`w-full py-4 rounded-3xl font-bold text-lg shadow-lg transition-all ${
+                    answeredCount === exercise.questions.length
+                      ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                      : "bg-muted text-muted-foreground cursor-not-allowed"
+                  }`}
+                  whileHover={answeredCount === exercise.questions.length ? { scale: 1.02 } : {}}
+                  whileTap={answeredCount === exercise.questions.length ? { scale: 0.98 } : {}}
+                >
+                  {answeredCount === exercise.questions.length
+                    ? "تسليم الإجابات"
+                    : `أجب على جميع الأسئلة (${answeredCount}/${exercise.questions.length})`}
+                </motion.button>
+              </motion.div>
+            )}
+
+            {/* Back Button */}
+            {completed && (
+              <div className="flex gap-3 mt-6">
+                <motion.button
+                  onClick={handleRestart}
+                  className="flex-1 py-4 bg-muted hover:bg-muted/80 rounded-3xl font-bold text-lg flex items-center justify-center gap-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <RotateCcw className="w-5 h-5" />
+                  إعادة التمرين
+                </motion.button>
+                <motion.button
+                  onClick={handleClose}
+                  className="flex-1 py-4 bg-primary text-primary-foreground rounded-3xl font-bold text-lg"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  إنهاء
+                </motion.button>
+              </div>
+            )}
+          </div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
 

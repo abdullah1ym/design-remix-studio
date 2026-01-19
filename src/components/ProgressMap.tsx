@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { createPortal } from "react-dom";
 import { Check, Lock, Play, Star, Volume2, Music, Ear, Type, MessageCircle, MessageSquare, Users, TreePine, Radio, Award, X } from "lucide-react";
 import { useSkills, SkillNode } from "@/contexts/SkillsContext";
 
@@ -63,11 +64,20 @@ const ProgressMap = ({ open, onOpenChange }: ProgressMapProps) => {
   const completedCount = skillNodes.filter(n => n.status === "completed").length;
   const totalCount = skillNodes.length;
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {open && (
-        <motion.div 
-          className="fixed inset-0 z-50 bg-background"
+        <motion.div
+          className="bg-background overflow-hidden"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: '5rem',
+            bottom: 0,
+            height: '100vh',
+            zIndex: 9999,
+          }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -91,7 +101,8 @@ const ProgressMap = ({ open, onOpenChange }: ProgressMapProps) => {
             </motion.button>
           </div>
           
-          <div className="absolute inset-0 pt-20 bg-gradient-to-b from-primary/30 via-background to-turquoise/10">
+          <div className="absolute inset-0 w-full h-full bg-background">
+            <div className="absolute inset-0 bg-gradient-to-b from-primary/15 via-transparent to-turquoise/10">
             {/* Grid pattern background */}
             <div 
               className="absolute inset-0 opacity-10"
@@ -171,7 +182,7 @@ const ProgressMap = ({ open, onOpenChange }: ProgressMapProps) => {
             </svg>
 
             {/* Skill nodes */}
-            {skillNodes.map((node, index) => {
+            {[...skillNodes].sort((a, b) => a.y - b.y).map((node, index) => {
               const styles = getNodeStyles(node);
               
               return (
@@ -265,10 +276,12 @@ const ProgressMap = ({ open, onOpenChange }: ProgressMapProps) => {
                 </div>
               </div>
             </div>
+            </div>
           </div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
 

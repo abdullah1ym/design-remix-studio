@@ -3,8 +3,19 @@ import { Map } from "lucide-react";
 import ProgressMap from "../ProgressMap";
 import { useState } from "react";
 
-const SkillMapView = () => {
+interface SkillMapViewProps {
+  onBack?: () => void;
+}
+
+const SkillMapView = ({ onBack }: SkillMapViewProps) => {
   const [mapOpen, setMapOpen] = useState(true);
+
+  const handleMapClose = (open: boolean) => {
+    setMapOpen(open);
+    if (!open && onBack) {
+      onBack();
+    }
+  };
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
@@ -45,7 +56,7 @@ const SkillMapView = () => {
         </motion.button>
       </motion.div>
 
-      <ProgressMap open={mapOpen} onOpenChange={setMapOpen} />
+      <ProgressMap open={mapOpen} onOpenChange={handleMapClose} />
     </div>
   );
 };
