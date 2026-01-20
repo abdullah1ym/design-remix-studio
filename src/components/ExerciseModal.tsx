@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Volume2, Play, CheckCircle, XCircle, RotateCcw, ChevronRight, Zap, Lock } from "lucide-react";
+import { X, Volume2, Play, CheckCircle, XCircle, RotateCcw, ChevronRight, Zap, Lock, AlertCircle } from "lucide-react";
 import { Exercise } from "@/contexts/ExercisesContext";
+import { smartJudge, JudgeOutput } from "@/services/smart-judge";
+import { useSoundProgress } from "@/contexts/SoundProgressContext";
 
 interface ExerciseModalProps {
   exercise: Exercise | null;
@@ -10,14 +12,56 @@ interface ExerciseModalProps {
   onClose: () => void;
 }
 
+// Arabic letters for detection
+const ARABIC_LETTERS = 'ءابتثجحخدذرزسشصضطظعغفقكلمنهوي';
+
+// Detect if exercise involves Arabic sounds
+const isArabicSoundExercise = (exercise: Exercise | null): boolean => {
+  if (!exercise) return false;
+  const title = exercise.title.toLowerCase();
+  const desc = exercise.description.toLowerCase();
+  return (
+    title.includes('صوت') ||
+    title.includes('حرف') ||
+    title.includes('أصوات') ||
+    title.includes('سمع') ||
+    desc.includes('صوت') ||
+    desc.includes('حرف') ||
+    exercise.questions.some(q =>
+      q.options.some(opt => opt.length <= 3 && [...opt].some(c => ARABIC_LETTERS.includes(c)))
+    )
+  );
+};
+
+// Extract target sound from question
+const extractTargetSound = (question: { prompt: string; options: string[] }): string | null => {
+  // Look for pattern like "صوت ب" or single letter options
+  const match = question.prompt.match(/صوت\s*([\u0621-\u064A])/);
+  if (match) return match[1];
+
+  // Check if options are single letters
+  const singleLetterOptions = question.options.filter(
+    opt => opt.length === 1 && ARABIC_LETTERS.includes(opt)
+  );
+  if (singleLetterOptions.length > 0) {
+    return singleLetterOptions[0];
+  }
+
+  return null;
+};
+
 const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
+  const { recordAnswer } = useSoundProgress();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number | null>>({});
+  const [judgeResults, setJudgeResults] = useState<Record<number, JudgeOutput>>({});
   const [revealedCount, setRevealedCount] = useState(1);
   const [completed, setCompleted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const questionRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const isArabicSound = isArabicSoundExercise(exercise);
 
   // Load voices when available
   useEffect(() => {
@@ -110,10 +154,37 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
   const handleSelectAnswer = (qIndex: number, answerIndex: number) => {
     if (answers[qIndex] !== undefined) return;
 
+    const question = exercise!.questions[qIndex];
     setAnswers(prev => ({ ...prev, [qIndex]: answerIndex }));
 
+    // Use smart judge for Arabic sound exercises
+    if (isArabicSound) {
+      const targetSound = extractTargetSound(question) || question.options[question.correctAnswer];
+      const result = smartJudge({
+        targetSound,
+        selectedAnswer: answerIndex,
+        correctAnswer: question.correctAnswer,
+        options: question.options,
+        level: 'real_words',
+        position: undefined
+      });
+
+      setJudgeResults(prev => ({ ...prev, [qIndex]: result }));
+
+      // Record in sound progress if it's a detectable Arabic sound
+      if (targetSound && ARABIC_LETTERS.includes(targetSound)) {
+        recordAnswer(
+          targetSound,
+          'real_words',
+          result.isCorrect,
+          undefined,
+          result.confusedWith
+        );
+      }
+    }
+
     // Reveal next question
-    if (qIndex + 1 < exercise.questions.length && qIndex + 1 >= revealedCount) {
+    if (qIndex + 1 < exercise!.questions.length && qIndex + 1 >= revealedCount) {
       setTimeout(() => {
         setRevealedCount(prev => Math.max(prev, qIndex + 2));
         setTimeout(() => {
@@ -134,6 +205,7 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
   const handleRestart = () => {
     setCurrentQuestion(0);
     setAnswers({});
+    setJudgeResults({});
     setRevealedCount(1);
     setCompleted(false);
   };
@@ -340,17 +412,58 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
                           <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className={`mt-6 p-4 rounded-2xl text-center ${
-                              isCorrect ? "bg-green-500/20 text-green-500" : "bg-red-500/20 text-red-400"
-                            }`}
+                            className="mt-6 space-y-3"
                           >
-                            <p className="font-bold text-lg">
-                              {isCorrect ? "إجابة صحيحة!" : "إجابة خاطئة"}
-                            </p>
-                            {!isCorrect && (
-                              <p className="text-sm mt-1">
-                                الإجابة الصحيحة: {question.options[question.correctAnswer]}
+                            {/* Main feedback */}
+                            <div className={`p-4 rounded-2xl text-center ${
+                              isCorrect ? "bg-green-500/20 text-green-500" : "bg-red-500/20 text-red-400"
+                            }`}>
+                              <p className="font-bold text-lg">
+                                {judgeResults[qIndex]?.feedback || (isCorrect ? "إجابة صحيحة!" : "إجابة خاطئة")}
                               </p>
+                              {!isCorrect && !judgeResults[qIndex] && (
+                                <p className="text-sm mt-1">
+                                  الإجابة الصحيحة: {question.options[question.correctAnswer]}
+                                </p>
+                              )}
+                            </div>
+
+                            {/* Smart Judge: Confusion Warning */}
+                            {judgeResults[qIndex]?.isConfusionError && judgeResults[qIndex]?.confusedWith && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                className="p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-2xl text-right"
+                              >
+                                <div className="flex items-start gap-3">
+                                  <AlertCircle className="w-5 h-5 text-yellow-500 shrink-0 mt-0.5" />
+                                  <div>
+                                    <p className="font-medium text-yellow-500">
+                                      {judgeResults[qIndex].detailedFeedback.explanation}
+                                    </p>
+                                    {judgeResults[qIndex].detailedFeedback.tip && (
+                                      <p className="text-sm mt-1 text-muted-foreground">
+                                        {judgeResults[qIndex].detailedFeedback.tip}
+                                      </p>
+                                    )}
+                                    {judgeResults[qIndex].detailedFeedback.practiceWords &&
+                                     judgeResults[qIndex].detailedFeedback.practiceWords!.length > 0 && (
+                                      <p className="text-sm mt-2 text-muted-foreground">
+                                        كلمات للتدريب: {judgeResults[qIndex].detailedFeedback.practiceWords!.join(' - ')}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              </motion.div>
+                            )}
+
+                            {/* Smart Judge: Suggestion */}
+                            {judgeResults[qIndex]?.suggestion && !judgeResults[qIndex]?.isConfusionError && !isCorrect && (
+                              <div className="p-3 bg-muted rounded-xl text-right">
+                                <p className="text-sm text-muted-foreground">
+                                  {judgeResults[qIndex].suggestion}
+                                </p>
+                              </div>
                             )}
                           </motion.div>
                         )}

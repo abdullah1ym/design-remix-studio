@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Music, Volume2, MessageCircle, Award } from "lucide-react";
+import { Music, Volume2, MessageCircle, Award, BookOpen } from "lucide-react";
 
 interface CategoryTabsProps {
   activeCategory: string;
@@ -7,10 +7,12 @@ interface CategoryTabsProps {
 }
 
 const categories = [
+  { id: "arabic-sounds", label: "تدريب اصوات العربية", icon: Volume2, color: "primary" },
+  { id: "makharij", label: "شرح مخارج الحروف", icon: BookOpen, color: "mint" },
+  { id: "similar-sounds", label: "تمييز الأصوات المتشابهة", icon: MessageCircle, color: "jellyfish" },
   { id: "tones", label: "تمييز النغمات", icon: Music, color: "coral" },
   { id: "words", label: "الكلمات والمقاطع", icon: Volume2, color: "yellow" },
   { id: "sentences", label: "الجمل والحوارات", icon: MessageCircle, color: "turquoise" },
-  { id: "advanced", label: "التدريب المتقدم", icon: Award, color: "jellyfish" },
 ];
 
 const CategoryTabs = ({ activeCategory, onCategoryChange }: CategoryTabsProps) => {
@@ -29,6 +31,8 @@ const CategoryTabs = ({ activeCategory, onCategoryChange }: CategoryTabsProps) =
           coral: "gradient-coral text-coral-foreground",
           yellow: "gradient-yellow text-yellow-foreground",
           turquoise: "gradient-turquoise text-turquoise-foreground",
+          mint: "bg-mint text-white",
+          primary: "bg-primary text-primary-foreground",
           jellyfish: "gradient-jellyfish text-jellyfish-foreground",
         };
 
@@ -36,6 +40,8 @@ const CategoryTabs = ({ activeCategory, onCategoryChange }: CategoryTabsProps) =
           coral: "bg-coral/20",
           yellow: "bg-yellow/20",
           turquoise: "bg-turquoise/20",
+          mint: "bg-mint/20",
+          primary: "bg-primary/20",
           jellyfish: "bg-jellyfish/20",
         };
         

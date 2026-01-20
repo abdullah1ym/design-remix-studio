@@ -5,6 +5,9 @@ import HeroSection from "@/components/HeroSection";
 import RecommendationPanel from "@/components/RecommendationPanel";
 import CategoryTabs from "@/components/CategoryTabs";
 import LessonGrid from "@/components/LessonGrid";
+import MakharijGrid from "@/components/MakharijGrid";
+import ArabicSoundsGrid from "@/components/ArabicSoundsGrid";
+import SimilarSoundsGrid from "@/components/SimilarSoundsGrid";
 import BubbleDecoration from "@/components/BubbleDecoration";
 import AdminPanel from "@/components/AdminPanel";
 import ExerciseModal from "@/components/ExerciseModal";
@@ -73,8 +76,16 @@ const Index = () => {
                   />
                 </div>
 
-                {/* Lesson Grid */}
-                <LessonGrid category={activeCategory} onExerciseClick={handleExerciseClick} />
+                {/* Lesson Grid or Custom Grids */}
+                {activeCategory === "makharij" ? (
+                  <MakharijGrid onExerciseClick={handleExerciseClick} />
+                ) : activeCategory === "arabic-sounds" ? (
+                  <ArabicSoundsGrid />
+                ) : activeCategory === "similar-sounds" ? (
+                  <SimilarSoundsGrid />
+                ) : (
+                  <LessonGrid category={activeCategory} onExerciseClick={handleExerciseClick} />
+                )}
               </>
             ) : activeSection === "progress" ? (
               <ProgressView />
