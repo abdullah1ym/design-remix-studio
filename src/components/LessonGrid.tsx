@@ -9,6 +9,7 @@ interface LessonGridProps {
 
 const categoryNames: Record<string, string> = {
   "tones": "تمييز النغمات",
+  "similar-sounds": "تمييز الأصوات المتشابهة",
   "words": "الكلمات والمقاطع",
   "sentences": "الجمل والحوارات",
   "environment": "الأصوات البيئية",

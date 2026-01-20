@@ -5,11 +5,10 @@ import { useExercises, Exercise, Question } from "@/contexts/ExercisesContext";
 import QuestionEditor from "./QuestionEditor";
 
 const categories = [
-  { id: "tones", label: "تمييز النغمات" },
+  { id: "similar-sounds", label: "تمييز الأصوات المتشابهة" },
   { id: "words", label: "الكلمات والمقاطع" },
   { id: "sentences", label: "الجمل والحوارات" },
-  { id: "environment", label: "الأصوات البيئية" },
-  { id: "advanced", label: "التدريب المتقدم" },
+  { id: "tones", label: "تمييز النغمات" },
 ];
 
 const difficulties = [
@@ -29,13 +28,13 @@ const ExerciseManager = () => {
   const { exercises, addExercise, updateExercise, deleteExercise, resetToDefaults } = useExercises();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isAdding, setIsAdding] = useState(false);
-  const [expandedCategory, setExpandedCategory] = useState<string | null>("tones");
+  const [expandedCategory, setExpandedCategory] = useState<string | null>("similar-sounds");
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
 
   const [form, setForm] = useState<Omit<Exercise, "id">>({
     title: "",
     description: "",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "beginner",
     type: "tone",
     duration: "٥ دقائق",
@@ -62,7 +61,7 @@ const ExerciseManager = () => {
     setForm({
       title: "",
       description: "",
-      category: "tones",
+      category: "similar-sounds",
       difficulty: "beginner",
       type: "tone",
       duration: "٥ دقائق",

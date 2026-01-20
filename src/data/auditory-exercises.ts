@@ -18,12 +18,17 @@ import { arabicSounds, getSoundById, getSimilarSounds } from "./arabic-sounds";
 // مولد الأسئلة حسب المرحلة
 // ============================================
 
+// Helper to get similar sound letters
+const getSimilarSoundLetters = (soundId: string): string[] => {
+  return getSimilarSounds(soundId).map(s => s.letter);
+};
+
 // توليد أسئلة مرحلة الصوت المعزول
 const generateIsolationQuestions = (soundId: string): AuditoryQuestion[] => {
   const sound = getSoundById(soundId);
   if (!sound) return [];
 
-  const similarSounds = getSimilarSounds(sound.letter);
+  const similarSoundLetters = getSimilarSoundLetters(soundId);
   const questions: AuditoryQuestion[] = [];
 
   // سؤال: تمييز الصوت المعزول
@@ -33,9 +38,9 @@ const generateIsolationQuestions = (soundId: string): AuditoryQuestion[] => {
     level: 'isolation',
     prompt: `استمع للصوت وحدد الحرف الصحيح`,
     audioDescription: `صوت الحرف ${sound.letter} معزولاً`,
-    options: [sound.letter, ...similarSounds.slice(0, 3)].sort(() => Math.random() - 0.5),
+    options: [sound.letter, ...similarSoundLetters.slice(0, 3)].sort(() => Math.random() - 0.5),
     correctAnswer: 0,
-    distractorSounds: similarSounds.slice(0, 3),
+    distractorSounds: similarSoundLetters.slice(0, 3),
     hint: sound.trainingTip,
     explanation: `هذا صوت ${sound.name}، مخرجه: ${sound.articulationDescription}`
   });
@@ -58,21 +63,21 @@ const generateIsolationQuestions = (soundId: string): AuditoryQuestion[] => {
   });
 
   // سؤال: تمييز بين صوتين متشابهين
-  if (similarSounds.length > 0) {
+  if (similarSoundLetters.length > 0) {
     questions.push({
       id: `${soundId}-isolation-3`,
       targetSound: sound.letter,
       level: 'isolation',
-      prompt: `ما الفرق بين صوت ${sound.letter} وصوت ${similarSounds[0]}؟`,
-      audioDescription: `مقارنة بين ${sound.letter} و ${similarSounds[0]}`,
+      prompt: `ما الفرق بين صوت ${sound.letter} وصوت ${similarSoundLetters[0]}؟`,
+      audioDescription: `مقارنة بين ${sound.letter} و ${similarSoundLetters[0]}`,
       options: [
         `${sound.letter} من ${sound.articulationDescription}`,
-        `${sound.letter} و ${similarSounds[0]} متطابقان`,
+        `${sound.letter} و ${similarSoundLetters[0]} متطابقان`,
         `لا يوجد فرق`,
-        `${similarSounds[0]} أقوى`
+        `${similarSoundLetters[0]} أقوى`
       ],
       correctAnswer: 0,
-      distractorSounds: [similarSounds[0]],
+      distractorSounds: [similarSoundLetters[0]],
       hint: 'ركز على مخرج كل صوت',
       explanation: `${sound.letter} مخرجه ${sound.articulationDescription}`
     });
@@ -88,10 +93,10 @@ const generateCVQuestions = (soundId: string): AuditoryQuestion[] => {
 
   const questions: AuditoryQuestion[] = [];
   const cvExamples = sound.examples.cv; // مثل: با، بي، بو
+  const similarSoundLetters = getSimilarSoundLetters(soundId);
 
   cvExamples.forEach((cv, index) => {
-    const similarSounds = getSimilarSounds(sound.letter);
-    const distractors = similarSounds.slice(0, 2).map(s => {
+    const distractors = similarSoundLetters.slice(0, 2).map(s => {
       const vowel = cv.slice(-1); // الحركة
       return s + vowel;
     });
@@ -104,7 +109,7 @@ const generateCVQuestions = (soundId: string): AuditoryQuestion[] => {
       audioDescription: `المقطع ${cv}`,
       options: [cv, ...distractors, cvExamples[(index + 1) % cvExamples.length]].slice(0, 4),
       correctAnswer: 0,
-      distractorSounds: similarSounds.slice(0, 2),
+      distractorSounds: similarSoundLetters.slice(0, 2),
       hint: `المقطع يبدأ بصوت ${sound.letter}`,
       explanation: `المقطع ${cv} يتكون من ${sound.letter} مع مد`
     });
@@ -125,10 +130,10 @@ const generateVCQuestions = (soundId: string): AuditoryQuestion[] => {
 
   const questions: AuditoryQuestion[] = [];
   const vcExamples = sound.examples.vc; // مثل: آب، إيب، أوب
+  const similarSoundLetters = getSimilarSoundLetters(soundId);
 
   vcExamples.forEach((vc, index) => {
-    const similarSounds = getSimilarSounds(sound.letter);
-    const distractors = similarSounds.slice(0, 2).map(s => {
+    const distractors = similarSoundLetters.slice(0, 2).map(s => {
       const vowel = vc.slice(0, -1); // المد
       return vowel + s;
     });
@@ -141,7 +146,7 @@ const generateVCQuestions = (soundId: string): AuditoryQuestion[] => {
       audioDescription: `المقطع ${vc}`,
       options: [vc, ...distractors].slice(0, 4),
       correctAnswer: 0,
-      distractorSounds: similarSounds.slice(0, 2),
+      distractorSounds: similarSoundLetters.slice(0, 2),
       hint: `المقطع ينتهي بصوت ${sound.letter}`,
       explanation: `المقطع ${vc} ينتهي بصوت ${sound.name}`
     });
@@ -190,9 +195,9 @@ const generateNonsenseWordsQuestions = (soundId: string): AuditoryQuestion[] => 
 
   const questions: AuditoryQuestion[] = [];
   const nonsenseWords = sound.examples.nonsenseWords;
+  const similarSoundLetters = getSimilarSoundLetters(soundId);
 
   nonsenseWords.forEach((word, index) => {
-    const similarSounds = getSimilarSounds(sound.letter);
     const distractors = nonsenseWords.filter(w => w !== word).slice(0, 2);
 
     questions.push({
@@ -201,9 +206,9 @@ const generateNonsenseWordsQuestions = (soundId: string): AuditoryQuestion[] => 
       level: 'nonsense_words',
       prompt: `استمع واختر الكلمة الصحيحة`,
       audioDescription: `الكلمة ${word}`,
-      options: [word, ...distractors, similarSounds[0] ? word.replace(sound.letter, similarSounds[0]) : word + 'ا'].slice(0, 4),
+      options: [word, ...distractors, similarSoundLetters[0] ? word.replace(sound.letter, similarSoundLetters[0]) : word + 'ا'].slice(0, 4),
       correctAnswer: 0,
-      distractorSounds: similarSounds.slice(0, 1),
+      distractorSounds: similarSoundLetters.slice(0, 1),
       hint: `الكلمة تحتوي على صوت ${sound.letter}`,
       explanation: `الكلمة ${word} تحتوي على صوت ${sound.name}`
     });
@@ -344,6 +349,7 @@ const generateStoryRetellingQuestions = (soundId: string): AuditoryQuestion[] =>
 
   const questions: AuditoryQuestion[] = [];
   const story = sound.examples.storyRetelling;
+  const similarSoundLetters = getSimilarSoundLetters(soundId);
 
   // استخراج كلمات تحتوي على الصوت المستهدف
   const words = story.split(/\s+/).filter(w => w.includes(sound.letter));
@@ -355,7 +361,7 @@ const generateStoryRetellingQuestions = (soundId: string): AuditoryQuestion[] =>
       level: 'story_retelling',
       prompt: `استمع للقصة ثم اختر الكلمة التي سمعتها`,
       audioDescription: `القصة: ${story}`,
-      options: [words[0], words[0].replace(sound.letter, getSimilarSounds(sound.letter)[0] || 'ا'), 'لم أسمعها', 'غير متأكد'],
+      options: [words[0], words[0].replace(sound.letter, similarSoundLetters[0] || 'ا'), 'لم أسمعها', 'غير متأكد'],
       correctAnswer: 0,
       hint: `ركز على الكلمات التي تحتوي على صوت ${sound.letter}`,
       explanation: `الكلمة ${words[0]} وردت في القصة`
@@ -368,7 +374,7 @@ const generateStoryRetellingQuestions = (soundId: string): AuditoryQuestion[] =>
     level: 'story_retelling',
     prompt: `ما الصوت الذي تكرر كثيراً في القصة؟`,
     audioDescription: `القصة: ${story}`,
-    options: [sound.letter, ...getSimilarSounds(sound.letter).slice(0, 3)],
+    options: [sound.letter, ...similarSoundLetters.slice(0, 3)],
     correctAnswer: 0,
     hint: `استمع للصوت المتكرر`,
     explanation: `صوت ${sound.name} هو الصوت المستهدف في هذه القصة`

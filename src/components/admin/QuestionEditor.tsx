@@ -22,6 +22,13 @@ const QuestionEditor = ({ question, index, onUpdate, onDelete }: QuestionEditorP
     });
   };
 
+  const handleToggleRandomized = () => {
+    onUpdate({
+      ...question,
+      isRandomized: !question.isRandomized,
+    });
+  };
+
   const handleRemoveOption = (optionIndex: number) => {
     if (question.options.length <= 2) return;
     const newOptions = question.options.filter((_, i) => i !== optionIndex);
@@ -93,16 +100,37 @@ const QuestionEditor = ({ question, index, onUpdate, onDelete }: QuestionEditorP
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">وصف الصوت (للتطوير)</label>
-                <input
-                  type="text"
-                  value={question.audioPlaceholder}
-                  onChange={(e) => onUpdate({ ...question, audioPlaceholder: e.target.value })}
-                  className="w-full px-3 py-2 bg-muted rounded-lg text-sm outline-none focus:ring-2 focus:ring-primary/50"
-                  placeholder="مثال: نغمة عالية (1000 Hz)"
-                />
+              {/* Randomized Toggle */}
+              <div className="flex items-center justify-between p-3 bg-primary/10 rounded-lg">
+                <div>
+                  <p className="text-sm font-medium">إجابة عشوائية</p>
+                  <p className="text-xs text-muted-foreground">الصوت يتغير عشوائياً والإجابة تعتمد عليه</p>
+                </div>
+                <button
+                  onClick={handleToggleRandomized}
+                  className={`w-12 h-6 rounded-full transition-colors ${
+                    question.isRandomized ? "bg-primary" : "bg-muted"
+                  }`}
+                >
+                  <div className={`w-5 h-5 bg-white rounded-full transition-transform shadow ${
+                    question.isRandomized ? "translate-x-1" : "translate-x-6"
+                  }`} />
+                </button>
               </div>
+
+              {/* Fixed audio - only show when NOT randomized */}
+              {!question.isRandomized && (
+                <div>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">الصوت الثابت</label>
+                  <input
+                    type="text"
+                    value={question.audioPlaceholder}
+                    onChange={(e) => onUpdate({ ...question, audioPlaceholder: e.target.value })}
+                    className="w-full px-3 py-2 bg-muted rounded-lg text-sm outline-none focus:ring-2 focus:ring-primary/50"
+                    placeholder="مثال: نغمة عالية (1000 Hz)"
+                  />
+                </div>
+              )}
 
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -120,16 +148,19 @@ const QuestionEditor = ({ question, index, onUpdate, onDelete }: QuestionEditorP
                 <div className="space-y-2">
                   {question.options.map((option, optionIndex) => (
                     <div key={optionIndex} className="flex items-center gap-2">
-                      <button
-                        onClick={() => onUpdate({ ...question, correctAnswer: optionIndex })}
-                        className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
-                          question.correctAnswer === optionIndex
-                            ? "border-turquoise bg-turquoise text-turquoise-foreground"
-                            : "border-muted-foreground/30 hover:border-muted-foreground"
-                        }`}
-                      >
-                        {question.correctAnswer === optionIndex && <Check className="w-3 h-3" />}
-                      </button>
+                      {/* Only show correct answer selector when NOT randomized */}
+                      {!question.isRandomized && (
+                        <button
+                          onClick={() => onUpdate({ ...question, correctAnswer: optionIndex })}
+                          className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
+                            question.correctAnswer === optionIndex
+                              ? "border-turquoise bg-turquoise text-turquoise-foreground"
+                              : "border-muted-foreground/30 hover:border-muted-foreground"
+                          }`}
+                        >
+                          {question.correctAnswer === optionIndex && <Check className="w-3 h-3" />}
+                        </button>
+                      )}
                       <input
                         type="text"
                         value={option}
@@ -149,7 +180,10 @@ const QuestionEditor = ({ question, index, onUpdate, onDelete }: QuestionEditorP
                   ))}
                 </div>
                 <p className="text-xs text-muted-foreground mt-2">
-                  اضغط على الدائرة لتحديد الإجابة الصحيحة
+                  {question.isRandomized
+                    ? "الصوت يُختار عشوائياً من الخيارات، والإجابة الصحيحة هي ما يُشغَّل"
+                    : "اضغط على الدائرة لتحديد الإجابة الصحيحة"
+                  }
                 </p>
               </div>
 

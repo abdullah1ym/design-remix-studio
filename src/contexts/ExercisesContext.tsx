@@ -6,6 +6,8 @@ export interface Question {
   audioPlaceholder: string;
   options: string[];
   correctAnswer: number;
+  // For randomized questions: audio is randomly selected from options
+  isRandomized?: boolean;
 }
 
 export interface Exercise {
@@ -474,7 +476,7 @@ const defaultExercises: Exercise[] = [
     id: "shafatan-fb",
     title: "التمييز بين الفاء والباء",
     description: "الفاء من الشفة السفلى والأسنان العليا، والباء من الشفتين معاً",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "beginner",
     type: "tone",
     duration: "٥ دقائق",
@@ -659,7 +661,7 @@ const defaultExercises: Exercise[] = [
     id: "letters-1",
     title: "التمييز بين ب و ت",
     description: "تدرب على التفريق بين صوت حرف الباء وحرف التاء",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "beginner",
     type: "tone",
     duration: "٥ دقائق",
@@ -680,7 +682,7 @@ const defaultExercises: Exercise[] = [
     id: "letters-2",
     title: "التمييز بين س و ش",
     description: "تدرب على التفريق بين صوت حرف السين وحرف الشين",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "beginner",
     type: "tone",
     duration: "٥ دقائق",
@@ -701,7 +703,7 @@ const defaultExercises: Exercise[] = [
     id: "letters-3",
     title: "التمييز بين د و ذ",
     description: "تدرب على التفريق بين صوت حرف الدال وحرف الذال",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "beginner",
     type: "tone",
     duration: "٥ دقائق",
@@ -722,7 +724,7 @@ const defaultExercises: Exercise[] = [
     id: "letters-4",
     title: "التمييز بين ح و خ",
     description: "تدرب على التفريق بين صوت حرف الحاء وحرف الخاء",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "intermediate",
     type: "tone",
     duration: "٥ دقائق",
@@ -743,7 +745,7 @@ const defaultExercises: Exercise[] = [
     id: "letters-5",
     title: "التمييز بين ع و غ",
     description: "تدرب على التفريق بين صوت حرف العين وحرف الغين",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "intermediate",
     type: "tone",
     duration: "٥ دقائق",
@@ -764,7 +766,7 @@ const defaultExercises: Exercise[] = [
     id: "letters-6",
     title: "التمييز بين ص و ض",
     description: "تدرب على التفريق بين صوت حرف الصاد وحرف الضاد",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "intermediate",
     type: "tone",
     duration: "٥ دقائق",
@@ -785,7 +787,7 @@ const defaultExercises: Exercise[] = [
     id: "letters-7",
     title: "التمييز بين ط و ظ",
     description: "تدرب على التفريق بين صوت حرف الطاء وحرف الظاء",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "advanced",
     type: "tone",
     duration: "٥ دقائق",
@@ -806,7 +808,7 @@ const defaultExercises: Exercise[] = [
     id: "letters-8",
     title: "التمييز بين ك و ق",
     description: "تدرب على التفريق بين صوت حرف الكاف وحرف القاف",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "advanced",
     type: "tone",
     duration: "٥ دقائق",
@@ -909,7 +911,7 @@ const defaultExercises: Exercise[] = [
   },
 ];
 
-const STORAGE_KEY = "deepdive-exercises-v6";
+const STORAGE_KEY = "deepdive-exercises-v8";
 
 const ExercisesContext = createContext<ExercisesContextType | undefined>(undefined);
 
@@ -948,7 +950,19 @@ export const ExercisesProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const getExercisesByCategory = (category: string) => {
-    return exercises.filter(e => e.category === category);
+    const filtered = exercises.filter(e => e.category === category);
+
+    // Sort by difficulty for all categories except arabic-sounds and makharij
+    if (category !== "arabic-sounds" && category !== "makharij") {
+      const difficultyOrder: Record<string, number> = {
+        beginner: 1,
+        intermediate: 2,
+        advanced: 3
+      };
+      return filtered.sort((a, b) => difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty]);
+    }
+
+    return filtered;
   };
 
   const getExerciseById = (id: string) => {

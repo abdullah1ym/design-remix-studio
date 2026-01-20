@@ -417,17 +417,12 @@ const MakharijGrid = ({ onExerciseClick }: MakharijGridProps) => {
                   <h2 className="text-2xl font-bold">{activeGroup.arabicName}</h2>
                   <p className="text-white/80 mt-1">{activeGroup.description}</p>
                 </div>
-                <div className="flex gap-2">
-                  {getAllLetters(activeGroup).slice(0, 5).map((letter) => (
-                    <span key={letter} className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-2xl font-bold">
+                <div className="flex flex-wrap gap-2 justify-end max-w-md">
+                  {getAllLetters(activeGroup).map((letter) => (
+                    <span key={letter} className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-xl font-bold">
                       {letter}
                     </span>
                   ))}
-                  {getAllLetters(activeGroup).length > 5 && (
-                    <span className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-sm font-bold">
-                      +{(getAllLetters(activeGroup).length - 5)}
-                    </span>
-                  )}
                 </div>
               </div>
             </div>

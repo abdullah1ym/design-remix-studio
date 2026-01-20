@@ -60,6 +60,9 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const questionRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const modalRef = useRef<HTMLDivElement>(null);
+  // For randomized questions: track which option's audio was randomly selected
+  const [randomizedCorrectAnswers, setRandomizedCorrectAnswers] = useState<Record<number, number>>({});
 
   const isArabicSound = isArabicSoundExercise(exercise);
 
@@ -83,19 +86,39 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
   const answeredCount = Object.values(answers).filter(a => a !== null).length;
   const score = Object.entries(answers).reduce((acc, [qIndex, answerIndex]) => {
     const question = exercise.questions[parseInt(qIndex)];
-    if (question && answerIndex === question.correctAnswer) {
+    if (!question) return acc;
+    // For randomized questions, use the randomized correct answer
+    const correctAnswer = question.isRandomized
+      ? randomizedCorrectAnswers[parseInt(qIndex)]
+      : question.correctAnswer;
+    if (answerIndex === correctAnswer) {
       return acc + 1;
     }
     return acc;
   }, 0);
 
-  const handlePlayAudio = (text?: string) => {
+  const handlePlayAudio = (text?: string, questionIndex?: number) => {
     if (isPlaying) return;
 
-    const question = exercise.questions[Object.keys(answers).length < exercise.questions.length
+    const qIndex = questionIndex ?? (Object.keys(answers).length < exercise.questions.length
       ? Math.max(0, revealedCount - 1)
-      : 0];
-    const textToSpeak = text || question?.audioPlaceholder || "";
+      : 0);
+    const question = exercise.questions[qIndex];
+
+    let textToSpeak = text || question?.audioPlaceholder || "";
+
+    // For randomized questions, randomly select an option and use its text as audio
+    if (question?.isRandomized && question.options.length > 0) {
+      // Check if we already selected a random answer for this question
+      if (randomizedCorrectAnswers[qIndex] === undefined) {
+        const randomIndex = Math.floor(Math.random() * question.options.length);
+        setRandomizedCorrectAnswers(prev => ({ ...prev, [qIndex]: randomIndex }));
+        textToSpeak = question.options[randomIndex] || "";
+      } else {
+        // Use the previously selected option's text
+        textToSpeak = question.options[randomizedCorrectAnswers[qIndex]] || "";
+      }
+    }
 
     if (!textToSpeak) {
       console.warn("No text to speak");
@@ -157,13 +180,18 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
     const question = exercise!.questions[qIndex];
     setAnswers(prev => ({ ...prev, [qIndex]: answerIndex }));
 
+    // Get the correct answer (randomized or fixed)
+    const correctAnswer = question.isRandomized
+      ? randomizedCorrectAnswers[qIndex]
+      : question.correctAnswer;
+
     // Use smart judge for Arabic sound exercises
     if (isArabicSound) {
-      const targetSound = extractTargetSound(question) || question.options[question.correctAnswer];
+      const targetSound = extractTargetSound(question) || question.options[correctAnswer];
       const result = smartJudge({
         targetSound,
         selectedAnswer: answerIndex,
-        correctAnswer: question.correctAnswer,
+        correctAnswer: correctAnswer,
         options: question.options,
         level: 'real_words',
         position: undefined
@@ -199,7 +227,10 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
 
   const handleSubmit = () => {
     setCompleted(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Scroll modal container to top
+    if (modalRef.current) {
+      modalRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const handleRestart = () => {
@@ -208,6 +239,7 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
     setJudgeResults({});
     setRevealedCount(1);
     setCompleted(false);
+    setRandomizedCorrectAnswers({}); // Reset randomized answers for new attempt
   };
 
   const handleClose = () => {
@@ -221,6 +253,7 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
     <AnimatePresence>
       {open && (
         <motion.div
+          ref={modalRef}
           className="bg-background overflow-auto"
           style={{
             position: 'fixed',
@@ -300,7 +333,7 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mb-6">
                     <div>
                       <h2 className="text-xl font-bold mb-1">النتيجة</h2>
                       <p className={`text-4xl font-bold ${textClass}`}>{score}/{exercise.questions.length}</p>
@@ -317,6 +350,27 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
                       <span className="text-xl font-bold text-yellow">+{xpEarned} XP</span>
                     </div>
                   </div>
+
+                  {/* Action Buttons - right after results */}
+                  <div className="flex gap-3">
+                    <motion.button
+                      onClick={handleRestart}
+                      className="flex-1 py-4 bg-white/20 hover:bg-white/30 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 transition-colors"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <RotateCcw className="w-5 h-5" />
+                      إعادة التمرين
+                    </motion.button>
+                    <motion.button
+                      onClick={handleClose}
+                      className="flex-1 py-4 bg-primary text-primary-foreground rounded-2xl font-bold text-lg transition-colors"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      إنهاء
+                    </motion.button>
+                  </div>
                 </motion.div>
               );
             })()}
@@ -328,7 +382,11 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
                   const selectedAnswer = answers[qIndex];
                   const isRevealed = qIndex < revealedCount || completed;
                   const isAnswered = selectedAnswer !== undefined && selectedAnswer !== null;
-                  const isCorrect = selectedAnswer === question.correctAnswer;
+                  // For randomized questions, use the randomized correct answer
+                  const correctAnswerForQ = question.isRandomized
+                    ? randomizedCorrectAnswers[qIndex]
+                    : question.correctAnswer;
+                  const isCorrect = selectedAnswer === correctAnswerForQ;
                   const isLatest = qIndex === revealedCount - 1 && !completed;
 
                   if (!isRevealed) return null;
@@ -361,7 +419,7 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
                         {/* Audio Player */}
                         <div className="flex justify-center mb-6">
                           <motion.button
-                            onClick={() => handlePlayAudio(question.audioPlaceholder)}
+                            onClick={() => handlePlayAudio(question.isRandomized ? undefined : question.audioPlaceholder, qIndex)}
                             className={`w-16 h-16 rounded-full flex items-center justify-center transition-colors ${
                               isPlaying ? "bg-primary/80" : "bg-primary hover:bg-primary/80"
                             }`}
@@ -380,7 +438,7 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
                         <div className="grid grid-cols-2 gap-3 mr-16">
                           {question.options.map((option, optIndex) => {
                             const isSelected = selectedAnswer === optIndex;
-                            const isCorrectOption = optIndex === question.correctAnswer;
+                            const isCorrectOption = optIndex === correctAnswerForQ;
                             let buttonStyle = "bg-muted hover:bg-muted/80 border-transparent";
                             if (isAnswered) {
                               if (isCorrectOption) buttonStyle = "bg-green-500/20 border-green-500 text-green-500";
@@ -421,9 +479,9 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
                               <p className="font-bold text-lg">
                                 {judgeResults[qIndex]?.feedback || (isCorrect ? "إجابة صحيحة!" : "إجابة خاطئة")}
                               </p>
-                              {!isCorrect && !judgeResults[qIndex] && (
+                              {!isCorrect && !judgeResults[qIndex] && correctAnswerForQ !== undefined && (
                                 <p className="text-sm mt-1">
-                                  الإجابة الصحيحة: {question.options[question.correctAnswer]}
+                                  الإجابة الصحيحة: {question.options[correctAnswerForQ]}
                                 </p>
                               )}
                             </div>
@@ -506,33 +564,7 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
               </motion.div>
             )}
 
-            {/* Back Button */}
-            {completed && (
-              <div className="flex gap-3 mt-6">
-                <motion.button
-                  onClick={handleRestart}
-                  className="flex-1 py-4 bg-muted hover:bg-muted/80 rounded-3xl font-bold text-lg flex items-center justify-center gap-2"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <RotateCcw className="w-5 h-5" />
-                  إعادة التمرين
-                </motion.button>
-                <motion.button
-                  onClick={handleClose}
-                  className="flex-1 py-4 bg-primary text-primary-foreground rounded-3xl font-bold text-lg"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  إنهاء
-                </motion.button>
-              </div>
-            )}
-          </div>
+                      </div>
         </motion.div>
       )}
     </AnimatePresence>,

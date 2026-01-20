@@ -10,9 +10,9 @@ const categories = [
   { id: "arabic-sounds", label: "تدريب اصوات العربية", icon: Volume2, color: "primary" },
   { id: "makharij", label: "شرح مخارج الحروف", icon: BookOpen, color: "mint" },
   { id: "similar-sounds", label: "تمييز الأصوات المتشابهة", icon: MessageCircle, color: "jellyfish" },
-  { id: "tones", label: "تمييز النغمات", icon: Music, color: "coral" },
   { id: "words", label: "الكلمات والمقاطع", icon: Volume2, color: "yellow" },
   { id: "sentences", label: "الجمل والحوارات", icon: MessageCircle, color: "turquoise" },
+  { id: "tones", label: "تمييز النغمات", icon: Music, color: "coral" },
 ];
 
 const CategoryTabs = ({ activeCategory, onCategoryChange }: CategoryTabsProps) => {

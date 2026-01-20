@@ -5,7 +5,6 @@ import {
   CheckCircle,
   XCircle,
   RotateCcw,
-  ChevronLeft,
   Lightbulb,
   Volume2,
   ArrowLeft,
@@ -21,7 +20,7 @@ import {
   getAvailableSounds,
   generateSimilarSoundsReview
 } from "@/data/auditory-exercises";
-import { getSoundById } from "@/data/arabic-sounds";
+import { getSoundById, getSoundByLetter } from "@/data/arabic-sounds";
 import {
   AuditoryExercise,
   AuditoryQuestion,
@@ -68,18 +67,37 @@ const SoundExerciseModal = ({
     question: AuditoryQuestion;
   }>>([]);
 
-  // Initialize with props
+  // Initialize with props when modal opens
   useEffect(() => {
-    if (initialSoundId && initialLevel) {
-      setSelectedSoundId(initialSoundId);
+    if (!isOpen) return;
+
+    // Convert letter to sound ID if needed (initialSoundId might be a letter like 'أ' or an ID like 'alif')
+    let soundId = initialSoundId;
+    if (initialSoundId) {
+      // Check if it's a letter by trying to find sound by letter
+      const soundByLetter = getSoundByLetter(initialSoundId);
+      if (soundByLetter) {
+        soundId = soundByLetter.id;
+      }
+    }
+
+    if (soundId && initialLevel) {
+      setSelectedSoundId(soundId);
       setSelectedLevel(initialLevel);
-      const ex = generateExercise(initialSoundId, initialLevel);
+      const ex = generateExercise(soundId, initialLevel);
       if (ex) {
         setExercise(ex);
         setViewState("exercise");
       }
+    } else if (soundId) {
+      // Skip to level selection when only sound is provided
+      setSelectedSoundId(soundId);
+      setViewState("select-level");
+    } else {
+      // Reset to sound selection if no initial values
+      setViewState("select-sound");
     }
-  }, [initialSoundId, initialLevel]);
+  }, [isOpen, initialSoundId, initialLevel]);
 
   const availableSounds = getAvailableSounds();
 
@@ -199,23 +217,6 @@ const SoundExerciseModal = ({
     }
   };
 
-  const handleBack = () => {
-    switch (viewState) {
-      case "select-level":
-        setViewState("select-sound");
-        setSelectedSoundId(null);
-        break;
-      case "exercise":
-      case "results":
-        setViewState("select-level");
-        setExercise(null);
-        resetExerciseState();
-        break;
-      default:
-        onClose();
-    }
-  };
-
   const handleClose = () => {
     setViewState("select-sound");
     setSelectedSoundId(null);
@@ -259,22 +260,14 @@ const SoundExerciseModal = ({
         >
           {/* Header */}
           <div className="p-6 border-b border-border flex items-center justify-between shrink-0">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={handleBack}
-                className="p-2 hover:bg-muted rounded-lg transition-colors"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <div>
-                <h2 className="text-xl font-bold">تدريبات الأصوات العربية</h2>
-                <p className="text-sm text-muted-foreground">
-                  {viewState === "select-sound" && "اختر الصوت للتدريب"}
-                  {viewState === "select-level" && selectedSoundId && `صوت ${getSoundById(selectedSoundId)?.letter}`}
-                  {viewState === "exercise" && exercise && exercise.title}
-                  {viewState === "results" && "نتيجة التمرين"}
-                </p>
-              </div>
+            <div>
+              <h2 className="text-xl font-bold">تدريبات الأصوات العربية</h2>
+              <p className="text-sm text-muted-foreground">
+                {viewState === "select-sound" && "اختر الصوت للتدريب"}
+                {viewState === "select-level" && selectedSoundId && `صوت ${getSoundById(selectedSoundId)?.letter}`}
+                {viewState === "exercise" && exercise && exercise.title}
+                {viewState === "results" && "نتيجة التمرين"}
+              </p>
             </div>
             <button
               onClick={handleClose}
