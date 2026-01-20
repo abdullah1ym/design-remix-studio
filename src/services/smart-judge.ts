@@ -153,16 +153,8 @@ const generateDetailedFeedback = (
   const sound = getSoundByLetter(targetSound);
 
   if (isCorrect) {
-    const positiveMessages = [
-      'أحسنت! إجابة صحيحة',
-      'ممتاز! استمر في التقدم',
-      'رائع! أداء متميز',
-      'صحيح! عمل جيد',
-      'بارك الله فيك! إجابة موفقة'
-    ];
-
     return {
-      message: positiveMessages[Math.floor(Math.random() * positiveMessages.length)],
+      message: 'إجابة صحيحة!',
       tip: level === 'isolation' && sound
         ? `تذكر: ${sound.letter} مخرجه ${sound.articulationDescription}`
         : undefined
