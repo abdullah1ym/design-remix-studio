@@ -39,6 +39,7 @@ const ExerciseManager = () => {
     type: "tone",
     duration: "٥ دقائق",
     questions: [],
+    shuffleQuestions: false,
   });
 
   const handleEdit = (exercise: Exercise) => {
@@ -52,6 +53,7 @@ const ExerciseManager = () => {
       type: exercise.type,
       duration: exercise.duration,
       questions: [...exercise.questions],
+      shuffleQuestions: exercise.shuffleQuestions || false,
     });
   };
 
@@ -66,6 +68,7 @@ const ExerciseManager = () => {
       type: "tone",
       duration: "٥ دقائق",
       questions: [],
+      shuffleQuestions: false,
     });
   };
 
@@ -319,6 +322,24 @@ const ExerciseManager = () => {
                     placeholder="مثال: ٥ دقائق"
                   />
                 </div>
+              </div>
+
+              {/* Shuffle Questions Toggle */}
+              <div className="flex items-center justify-between p-4 bg-primary/10 rounded-xl">
+                <div>
+                  <p className="font-medium">ترتيب عشوائي للأسئلة</p>
+                  <p className="text-xs text-muted-foreground">الأسئلة تظهر بترتيب مختلف كل مرة</p>
+                </div>
+                <button
+                  onClick={() => setForm(prev => ({ ...prev, shuffleQuestions: !prev.shuffleQuestions }))}
+                  className={`w-12 h-6 rounded-full transition-colors ${
+                    form.shuffleQuestions ? "bg-primary" : "bg-muted"
+                  }`}
+                >
+                  <div className={`w-5 h-5 bg-white rounded-full transition-transform shadow ${
+                    form.shuffleQuestions ? "translate-x-1" : "translate-x-6"
+                  }`} />
+                </button>
               </div>
 
               {/* Questions */}

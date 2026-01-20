@@ -63,8 +63,27 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
   // For randomized questions: track which option's audio was randomly selected
   const [randomizedCorrectAnswers, setRandomizedCorrectAnswers] = useState<Record<number, number>>({});
+  // For shuffled question order
+  const [shuffledQuestions, setShuffledQuestions] = useState<typeof exercise.questions>([]);
 
   const isArabicSound = isArabicSoundExercise(exercise);
+
+  // Shuffle questions when exercise opens
+  useEffect(() => {
+    if (exercise && open) {
+      if (exercise.shuffleQuestions) {
+        // Fisher-Yates shuffle
+        const shuffled = [...exercise.questions];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        setShuffledQuestions(shuffled);
+      } else {
+        setShuffledQuestions(exercise.questions);
+      }
+    }
+  }, [exercise, open]);
 
   // Load voices when available
   useEffect(() => {
@@ -83,9 +102,12 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
 
   if (!exercise) return null;
 
+  // Use shuffled questions
+  const questions = shuffledQuestions.length > 0 ? shuffledQuestions : exercise.questions;
+
   const answeredCount = Object.values(answers).filter(a => a !== null).length;
   const score = Object.entries(answers).reduce((acc, [qIndex, answerIndex]) => {
-    const question = exercise.questions[parseInt(qIndex)];
+    const question = questions[parseInt(qIndex)];
     if (!question) return acc;
     // For randomized questions, use the randomized correct answer
     const correctAnswer = question.isRandomized
@@ -100,10 +122,10 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
   const handlePlayAudio = (text?: string, questionIndex?: number) => {
     if (isPlaying) return;
 
-    const qIndex = questionIndex ?? (Object.keys(answers).length < exercise.questions.length
+    const qIndex = questionIndex ?? (Object.keys(answers).length < questions.length
       ? Math.max(0, revealedCount - 1)
       : 0);
-    const question = exercise.questions[qIndex];
+    const question = questions[qIndex];
 
     let textToSpeak = text || question?.audioPlaceholder || "";
 
@@ -240,6 +262,15 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
     setRevealedCount(1);
     setCompleted(false);
     setRandomizedCorrectAnswers({}); // Reset randomized answers for new attempt
+    // Re-shuffle questions if enabled
+    if (exercise?.shuffleQuestions) {
+      const shuffled = [...exercise.questions];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      setShuffledQuestions(shuffled);
+    }
   };
 
   const handleClose = () => {
@@ -292,7 +323,7 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
               </div>
               <div className="flex-shrink-0 text-center min-w-[60px]">
                 <p className="text-xs text-muted-foreground">التقدم</p>
-                <p className="text-base font-bold">{answeredCount}/{exercise.questions.length}</p>
+                <p className="text-base font-bold">{answeredCount}/{questions.length}</p>
               </div>
             </motion.div>
 
@@ -306,7 +337,7 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
                 <motion.div
                   className="h-full bg-gradient-to-l from-primary to-yellow shadow-lg shadow-primary/50 rounded-full"
                   initial={{ width: 0 }}
-                  animate={{ width: `${(answeredCount / exercise.questions.length) * 100}%` }}
+                  animate={{ width: `${(answeredCount / questions.length) * 100}%` }}
                   transition={{ duration: 0.5, ease: "easeOut" }}
                 />
               </div>
@@ -314,7 +345,7 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
 
             {/* Results Banner */}
             {completed && (() => {
-              const percentage = (score / exercise.questions.length) * 100;
+              const percentage = (score / questions.length) * 100;
               const gradeColor = percentage >= 80 ? 'green' : percentage >= 50 ? 'yellow' : 'red';
               const bgClass = gradeColor === 'green'
                 ? 'from-green-500/20 to-primary/20'
@@ -336,11 +367,11 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
                   <div className="flex items-center justify-between mb-6">
                     <div>
                       <h2 className="text-xl font-bold mb-1">النتيجة</h2>
-                      <p className={`text-4xl font-bold ${textClass}`}>{score}/{exercise.questions.length}</p>
+                      <p className={`text-4xl font-bold ${textClass}`}>{score}/{questions.length}</p>
                       <p className="text-sm text-muted-foreground mt-1">
-                        {score === exercise.questions.length
+                        {score === questions.length
                           ? "ممتاز! إجابات صحيحة بالكامل"
-                          : score >= exercise.questions.length / 2
+                          : score >= questions.length / 2
                           ? "جيد جداً! استمر في التدريب"
                           : "حاول مرة أخرى للتحسن"}
                       </p>
@@ -378,7 +409,7 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
             {/* Questions - Progressive Mode */}
             <div className="space-y-4">
               <AnimatePresence mode="popLayout">
-                {exercise.questions.map((question, qIndex) => {
+                {questions.map((question, qIndex) => {
                   const selectedAnswer = answers[qIndex];
                   const isRevealed = qIndex < revealedCount || completed;
                   const isAnswered = selectedAnswer !== undefined && selectedAnswer !== null;
@@ -531,10 +562,10 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
                 })}
               </AnimatePresence>
 
-              {!completed && revealedCount < exercise.questions.length && (
+              {!completed && revealedCount < questions.length && (
                 <motion.div className="flex items-center justify-center gap-3 py-8 text-muted-foreground">
                   <Lock className="w-5 h-5" />
-                  <span>{exercise.questions.length - revealedCount} أسئلة متبقية</span>
+                  <span>{questions.length - revealedCount} أسئلة متبقية</span>
                 </motion.div>
               )}
             </div>
@@ -548,18 +579,18 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
               >
                 <motion.button
                   onClick={handleSubmit}
-                  disabled={answeredCount < exercise.questions.length}
+                  disabled={answeredCount < questions.length}
                   className={`w-full py-4 rounded-3xl font-bold text-lg shadow-lg transition-all ${
-                    answeredCount === exercise.questions.length
+                    answeredCount === questions.length
                       ? "bg-primary text-primary-foreground hover:bg-primary/90"
                       : "bg-muted text-muted-foreground cursor-not-allowed"
                   }`}
-                  whileHover={answeredCount === exercise.questions.length ? { scale: 1.02 } : {}}
-                  whileTap={answeredCount === exercise.questions.length ? { scale: 0.98 } : {}}
+                  whileHover={answeredCount === questions.length ? { scale: 1.02 } : {}}
+                  whileTap={answeredCount === questions.length ? { scale: 0.98 } : {}}
                 >
-                  {answeredCount === exercise.questions.length
+                  {answeredCount === questions.length
                     ? "تسليم الإجابات"
-                    : `أجب على جميع الأسئلة (${answeredCount}/${exercise.questions.length})`}
+                    : `أجب على جميع الأسئلة (${answeredCount}/${questions.length})`}
                 </motion.button>
               </motion.div>
             )}

@@ -19,6 +19,8 @@ export interface Exercise {
   type: "tone" | "word" | "sentence";
   duration: string;
   questions: Question[];
+  // Randomize the order of questions when exercise starts
+  shuffleQuestions?: boolean;
 }
 
 interface ExercisesContextType {

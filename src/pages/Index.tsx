@@ -23,7 +23,7 @@ import SkillMapView from "@/components/views/SkillMapView";
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState("home");
-  const [activeCategory, setActiveCategory] = useState("tones");
+  const [activeCategory, setActiveCategory] = useState("arabic-sounds");
   const [adminOpen, setAdminOpen] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   const [exerciseModalOpen, setExerciseModalOpen] = useState(false);
