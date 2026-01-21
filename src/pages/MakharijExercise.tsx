@@ -81,22 +81,25 @@ const MakharijExercise = () => {
     if (isPlaying) return;
 
     if ('speechSynthesis' in window) {
+      // Stop any ongoing speech
       window.speechSynthesis.cancel();
-      if (window.speechSynthesis.paused) {
-        window.speechSynthesis.resume();
-      }
 
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'ar-SA';
-      utterance.rate = 0.5;
+      utterance.rate = 0.8; // Clearer audio
       utterance.pitch = 1;
       utterance.volume = 1;
 
+      // Get available voices
       const currentVoices = voices.length > 0 ? voices : window.speechSynthesis.getVoices();
+
+      // Prioritize high-quality Arabic voices
       const arabicVoice = currentVoices.find(voice =>
-        voice.lang.startsWith('ar') ||
-        voice.lang.includes('AR') ||
-        voice.name.toLowerCase().includes('arab')
+        voice.lang === 'ar-SA' && voice.localService === false
+      ) || currentVoices.find(voice =>
+        voice.lang === 'ar-SA'
+      ) || currentVoices.find(voice =>
+        voice.lang.startsWith('ar')
       );
 
       if (arabicVoice) {
@@ -107,9 +110,10 @@ const MakharijExercise = () => {
       utterance.onend = () => setIsPlaying(false);
       utterance.onerror = () => setIsPlaying(false);
 
+      // Chrome workaround: needs a small delay after cancel
       setTimeout(() => {
         window.speechSynthesis.speak(utterance);
-      }, 50);
+      }, 100);
     }
   };
 

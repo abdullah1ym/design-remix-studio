@@ -38,7 +38,7 @@ const defaultExercises: Exercise[] = [
     id: "jawfiya-1",
     title: "الحروف الجوفية",
     description: "تدرب على التمييز بين حروف المد: الألف والواو والياء - تخرج من الجوف (تجويف الفم والحلق)",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "beginner",
     type: "tone",
     duration: "٥ دقائق",
@@ -82,7 +82,7 @@ const defaultExercises: Exercise[] = [
     id: "halq-aqsa-1",
     title: "أقصى الحلق: الهمزة والهاء",
     description: "حروف تخرج من أبعد نقطة في الحلق - مهمة جداً لمستخدمي زراعة القوقعة",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "beginner",
     type: "tone",
     duration: "٥ دقائق",
@@ -124,7 +124,7 @@ const defaultExercises: Exercise[] = [
     id: "halq-wasat-1",
     title: "وسط الحلق: العين والحاء",
     description: "حروف تخرج من منتصف الحلق - صعبة على مستخدمي زراعة القوقعة",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "intermediate",
     type: "tone",
     duration: "٥ دقائق",
@@ -166,7 +166,7 @@ const defaultExercises: Exercise[] = [
     id: "halq-adna-1",
     title: "أدنى الحلق: الغين والخاء",
     description: "حروف تخرج من أقرب نقطة في الحلق للفم",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "intermediate",
     type: "tone",
     duration: "٥ دقائق",
@@ -208,7 +208,7 @@ const defaultExercises: Exercise[] = [
     id: "halq-all",
     title: "جميع حروف الحلق",
     description: "تدرب على التمييز بين جميع حروف الحلق الستة: ء، هـ، ع، ح، غ، خ",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "advanced",
     type: "tone",
     duration: "٨ دقائق",
@@ -231,7 +231,7 @@ const defaultExercises: Exercise[] = [
     id: "lisan-aqsa-1",
     title: "أقصى اللسان: القاف والكاف",
     description: "حروف تخرج من مؤخرة اللسان مع الحنك - القاف أعمق من الكاف",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "intermediate",
     type: "tone",
     duration: "٥ دقائق",
@@ -273,7 +273,7 @@ const defaultExercises: Exercise[] = [
     id: "lisan-wasat-1",
     title: "وسط اللسان: الجيم والشين والياء",
     description: "حروف تخرج من وسط اللسان مع الحنك الأعلى",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "intermediate",
     type: "tone",
     duration: "٦ دقائق",
@@ -294,7 +294,7 @@ const defaultExercises: Exercise[] = [
     id: "lisan-hafa-dad",
     title: "حافة اللسان: الضاد",
     description: "الضاد - الحرف الفريد الذي تسمى به اللغة العربية (لغة الضاد)",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "advanced",
     type: "tone",
     duration: "٥ دقائق",
@@ -315,7 +315,7 @@ const defaultExercises: Exercise[] = [
     id: "lisan-taraf-nat",
     title: "طرف اللسان - النِطع: التاء والدال والطاء",
     description: "حروف تخرج من طرف اللسان مع أصول الثنايا العليا (اللثة)",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "beginner",
     type: "tone",
     duration: "٦ دقائق",
@@ -336,7 +336,7 @@ const defaultExercises: Exercise[] = [
     id: "lisan-taraf-litha",
     title: "طرف اللسان - اللثة: الثاء والذال والظاء",
     description: "حروف تخرج من طرف اللسان مع أطراف الثنايا العليا",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "intermediate",
     type: "tone",
     duration: "٦ دقائق",
@@ -357,7 +357,7 @@ const defaultExercises: Exercise[] = [
     id: "lisan-taraf-safir",
     title: "طرف اللسان - الصفير: الصاد والسين والزاي",
     description: "حروف الصفير - تخرج مع صوت يشبه الصفير - مهمة لزراعة القوقعة",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "intermediate",
     type: "tone",
     duration: "٦ دقائق",
@@ -399,7 +399,7 @@ const defaultExercises: Exercise[] = [
     id: "lisan-taraf-lnr",
     title: "طرف اللسان: اللام والنون والراء",
     description: "حروف تخرج من طرف اللسان - مهمة جداً في النطق اليومي",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "beginner",
     type: "tone",
     duration: "٦ دقائق",
@@ -420,7 +420,7 @@ const defaultExercises: Exercise[] = [
     id: "shafatan-1",
     title: "حروف الشفتين",
     description: "حروف تخرج من الشفتين: الفاء والواو والباء والميم",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "beginner",
     type: "tone",
     duration: "٦ دقائق",
@@ -484,7 +484,7 @@ const defaultExercises: Exercise[] = [
     id: "khayshum-1",
     title: "الخيشوم: الأصوات الأنفية",
     description: "الغنة - صوت يخرج من الأنف مع الميم والنون المشددتين",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "intermediate",
     type: "tone",
     duration: "٥ دقائق",
@@ -570,7 +570,7 @@ const defaultExercises: Exercise[] = [
     id: "ci-voiced-voiceless",
     title: "المجهور والمهموس",
     description: "تمييز بين الحروف المجهورة (مع اهتزاز الحبال الصوتية) والمهموسة",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "advanced",
     type: "tone",
     duration: "٦ دقائق",
@@ -591,7 +591,7 @@ const defaultExercises: Exercise[] = [
     id: "ci-frequency",
     title: "التمييز الترددي",
     description: "تمييز بين الأصوات عالية التردد (س، ش، ف) والأصوات منخفضة التردد (م، ن، و)",
-    category: "tones",
+    category: "similar-sounds",
     difficulty: "intermediate",
     type: "tone",
     duration: "٦ دقائق",
@@ -835,12 +835,26 @@ const defaultExercises: Exercise[] = [
   }
 ];
 
-const STORAGE_KEY = "deepdive-exercises-v19";
+const STORAGE_KEY = "deepdive-exercises-v37";
 
 const ExercisesContext = createContext<ExercisesContextType | undefined>(undefined);
 
 export const ExercisesProvider = ({ children }: { children: ReactNode }) => {
   const [exercises, setExercises] = useState<Exercise[]>(() => {
+    // Check if we should force reload from code (after save to code)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('fromCode') === '1') {
+      // Clear the URL parameter
+      window.history.replaceState({}, '', window.location.pathname);
+      // Clear old localStorage
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('deepdive-exercises')) {
+          localStorage.removeItem(key);
+        }
+      });
+      return defaultExercises;
+    }
+
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {

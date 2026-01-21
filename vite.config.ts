@@ -17,11 +17,18 @@ function saveExercisesPlugin() {
             try {
               const { exercises } = JSON.parse(body);
 
+              // Log the exercises being saved
+              console.log('Saving exercises count:', exercises.length);
+              exercises.forEach((ex, i) => {
+                console.log(`  ${i}: ${ex.id} - category: ${ex.category}`);
+              });
+
               // Generate the exercises code
               const generateExerciseCode = (ex) => {
-                const questionsCode = ex.questions.map(q =>
-                  `      { id: "${q.id}", prompt: "${q.prompt}", audioPlaceholder: "${q.audioPlaceholder}", options: [${q.options.map(o => `"${o.replace(/"/g, '\\"')}"`).join(", ")}], correctAnswer: ${q.correctAnswer} }`
-                ).join(",\n");
+                const questionsCode = ex.questions.map(q => {
+                  const isRandomizedPart = q.isRandomized ? ', isRandomized: true' : '';
+                  return `      { id: "${q.id}", prompt: "${q.prompt}", audioPlaceholder: "${q.audioPlaceholder}", options: [${q.options.map(o => `"${o.replace(/"/g, '\\"')}"`).join(", ")}], correctAnswer: ${q.correctAnswer}${isRandomizedPart} }`;
+                }).join(",\n");
 
                 return `  {
     id: "${ex.id}",
@@ -54,22 +61,22 @@ ${questionsCode}
               console.log('Save exercises: startIndex=', startIndex, 'endIndex=', endIndex, 'filePath=', filePath);
 
               if (startIndex !== -1 && endIndex !== -1) {
-                const newContent = content.substring(0, startIndex + startMarker.length) +
+                // Bump version first, then write ONCE
+                const versionMatch = content.match(/deepdive-exercises-v(\d+)/);
+                let newContent = content.substring(0, startIndex + startMarker.length) +
                   '\n' + exercisesCode + '\n' +
                   content.substring(endIndex);
 
-                fs.writeFileSync(filePath, newContent);
-
-                // Bump version
-                const versionMatch = newContent.match(/deepdive-exercises-v(\d+)/);
                 if (versionMatch) {
                   const newVersion = parseInt(versionMatch[1]) + 1;
-                  const updatedContent = newContent.replace(
+                  newContent = newContent.replace(
                     /deepdive-exercises-v\d+/g,
                     `deepdive-exercises-v${newVersion}`
                   );
-                  fs.writeFileSync(filePath, updatedContent);
                 }
+
+                // Single write with both exercises and new version
+                fs.writeFileSync(filePath, newContent);
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ success: true }));

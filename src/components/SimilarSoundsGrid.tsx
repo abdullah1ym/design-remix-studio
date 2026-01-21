@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Volume2, Play, Clock, BarChart3 } from "lucide-react";
-import { exercises, Exercise } from "@/data/exercises";
+import { useExercises, Exercise } from "@/contexts/ExercisesContext";
 import ExerciseModal from "./ExerciseModal";
 
 const SimilarSoundsGrid = () => {
+  const { getExercisesByCategory } = useExercises();
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
   // Get similar-sounds exercises
-  const similarSoundsExercises = exercises.filter(e => e.category === "similar-sounds");
+  const similarSoundsExercises = getExercisesByCategory("similar-sounds");
 
   const handleExerciseClick = (exercise: Exercise) => {
     setSelectedExercise(exercise);

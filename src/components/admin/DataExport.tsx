@@ -82,6 +82,7 @@ const DataExport = () => {
 
   const handleSaveToCode = async () => {
     setSaveStatus("saving");
+
     try {
       const response = await fetch('/api/save-exercises', {
         method: 'POST',
@@ -91,7 +92,10 @@ const DataExport = () => {
 
       if (response.ok) {
         setSaveStatus("success");
-        setTimeout(() => setSaveStatus("idle"), 2000);
+        // Redirect with parameter to force load from code
+        setTimeout(() => {
+          window.location.href = window.location.pathname + '?fromCode=1';
+        }, 500);
       } else {
         setSaveStatus("error");
         setTimeout(() => setSaveStatus("idle"), 3000);

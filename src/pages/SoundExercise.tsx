@@ -94,6 +94,16 @@ const SoundExercise = () => {
 
   // For isolation level, use pronunciation practice items
   const isIsolationLevel = level === 'isolation';
+
+  // Helper to add fatha vowel to single consonants for clearer TTS pronunciation
+  const getAudioText = (text: string) => {
+    // If it's a single letter without vowel marks, add fatha for clearer pronunciation
+    if (text.length === 1 && !/[\u064B-\u0652]/.test(text)) {
+      return text + '\u064E'; // Add fatha (ـَ)
+    }
+    return text;
+  };
+
   const practiceItems = sound ? [
     sound.letter,
     ...(sound.examples.cv || [])
@@ -103,17 +113,21 @@ const SoundExercise = () => {
     if (isPlaying) return;
 
     if ('speechSynthesis' in window) {
+      // Cancel any ongoing speech
       window.speechSynthesis.cancel();
+
+      // Chrome workaround: resume if paused
       if (window.speechSynthesis.paused) {
         window.speechSynthesis.resume();
       }
 
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'ar-SA';
-      utterance.rate = 0.5;
+      utterance.rate = 0.6; // Slower for clarity
       utterance.pitch = 1;
       utterance.volume = 1;
 
+      // Find Arabic voice - try multiple patterns
       const currentVoices = voices.length > 0 ? voices : window.speechSynthesis.getVoices();
       const arabicVoice = currentVoices.find(voice =>
         voice.lang.startsWith('ar') ||
@@ -127,9 +141,16 @@ const SoundExercise = () => {
 
       setIsPlaying(true);
 
-      utterance.onend = () => setIsPlaying(false);
-      utterance.onerror = () => setIsPlaying(false);
+      utterance.onend = () => {
+        setIsPlaying(false);
+      };
 
+      utterance.onerror = (e) => {
+        console.error("Speech error:", e);
+        setIsPlaying(false);
+      };
+
+      // Small delay to ensure speech synthesis is ready
       setTimeout(() => {
         window.speechSynthesis.speak(utterance);
       }, 50);
@@ -446,7 +467,7 @@ const SoundExercise = () => {
               <div className="flex justify-center gap-6 mb-6">
                 {/* Play Button */}
                 <motion.button
-                  onClick={() => handlePlayPracticeAudio(practiceItems[currentPracticeIndex])}
+                  onClick={() => handlePlayPracticeAudio(getAudioText(practiceItems[currentPracticeIndex]))}
                   className={`w-20 h-20 rounded-full bg-primary text-white flex items-center justify-center shadow-lg active:bg-primary ${isPlaying ? 'animate-pulse' : ''}`}
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.99 }}
