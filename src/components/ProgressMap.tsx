@@ -218,23 +218,11 @@ const ProgressMap = ({ open, onOpenChange }: ProgressMapProps) => {
                     )}
                   </motion.div>
 
-                  {/* Tooltip */}
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20">
-                    <div className={`px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap ${
-                      node.status === "completed" 
-                        ? "bg-turquoise text-turquoise-foreground" 
-                        : node.status === "current"
-                        ? "bg-yellow text-yellow-foreground"
-                        : "bg-card text-foreground border border-border"
-                    }`}>
+                  {/* Title below node */}
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 text-center pointer-events-none z-10">
+                    <span className="text-xs font-semibold text-foreground whitespace-nowrap drop-shadow-sm">
                       {node.title}
-                      {node.status === "current" && (
-                        <span className="block text-[10px] opacity-80">قيد التقدم</span>
-                      )}
-                      {node.status === "locked" && (
-                        <span className="block text-[10px] opacity-60">مقفل</span>
-                      )}
-                    </div>
+                    </span>
                   </div>
                 </motion.div>
               );
