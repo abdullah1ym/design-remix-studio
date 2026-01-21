@@ -53,9 +53,9 @@ const DataExport = () => {
           throw new Error("Invalid backup file structure");
         }
 
-        // Import to localStorage
-        localStorage.setItem("deepdive-exercises", JSON.stringify(data.exercises));
-        localStorage.setItem("deepdive-lessons", JSON.stringify(data.lessons));
+        // Import to localStorage (use correct versioned keys)
+        localStorage.setItem("deepdive-exercises-v11", JSON.stringify(data.exercises));
+        localStorage.setItem("deepdive-lessons-v2", JSON.stringify(data.lessons));
         localStorage.setItem("deepdive-skills", JSON.stringify(data.skills));
 
         setImportStatus("success");
@@ -73,8 +73,8 @@ const DataExport = () => {
   };
 
   const handleResetAll = () => {
-    localStorage.removeItem("deepdive-exercises");
-    localStorage.removeItem("deepdive-lessons");
+    localStorage.removeItem("deepdive-exercises-v11");
+    localStorage.removeItem("deepdive-lessons-v2");
     localStorage.removeItem("deepdive-skills");
     window.location.reload();
   };

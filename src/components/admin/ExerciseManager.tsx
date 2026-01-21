@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Edit2, Trash2, ChevronDown, ChevronUp, X } from "lucide-react";
+import { Plus, Edit2, Trash2, ChevronDown, ChevronUp, X, Copy, Check } from "lucide-react";
 import { useExercises, Exercise, Question } from "@/contexts/ExercisesContext";
 import QuestionEditor from "./QuestionEditor";
 
@@ -30,6 +30,33 @@ const ExerciseManager = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [expandedCategory, setExpandedCategory] = useState<string | null>("similar-sounds");
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const generateExerciseCode = (exercise: Exercise) => {
+    const questionsCode = exercise.questions.map(q =>
+      `      { id: "${q.id}", prompt: "${q.prompt}", audioPlaceholder: "${q.audioPlaceholder}", options: [${q.options.map(o => `"${o}"`).join(", ")}], correctAnswer: ${q.correctAnswer} }`
+    ).join(",\n");
+
+    return `  {
+    id: "${exercise.id}",
+    title: "${exercise.title}",
+    description: "${exercise.description}",
+    category: "${exercise.category}",
+    difficulty: "${exercise.difficulty}",
+    type: "${exercise.type}",
+    duration: "${exercise.duration}",${exercise.shuffleQuestions ? '\n    shuffleQuestions: true,' : ''}
+    questions: [
+${questionsCode}
+    ],
+  },`;
+  };
+
+  const handleCopyCode = async (exercise: Exercise) => {
+    const code = generateExerciseCode(exercise);
+    await navigator.clipboard.writeText(code);
+    setCopiedId(exercise.id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
 
   const [form, setForm] = useState<Omit<Exercise, "id">>({
     title: "",
@@ -189,6 +216,17 @@ const ExerciseManager = () => {
                               </p>
                             </div>
                             <div className="flex items-center gap-1 mr-2">
+                              <button
+                                onClick={() => handleCopyCode(exercise)}
+                                className="p-2 hover:bg-turquoise/20 hover:text-turquoise rounded-lg transition-colors"
+                                title="نسخ الكود"
+                              >
+                                {copiedId === exercise.id ? (
+                                  <Check className="w-4 h-4 text-turquoise" />
+                                ) : (
+                                  <Copy className="w-4 h-4" />
+                                )}
+                              </button>
                               <button
                                 onClick={() => handleEdit(exercise)}
                                 className="p-2 hover:bg-muted rounded-lg transition-colors"

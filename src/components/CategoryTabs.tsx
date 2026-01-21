@@ -7,7 +7,7 @@ interface CategoryTabsProps {
 }
 
 const categories = [
-  { id: "arabic-sounds", label: "تدريب اصوات العربية", icon: Volume2, color: "primary" },
+  { id: "arabic-sounds", label: "تدريب الحروف العربية", icon: Volume2, color: "primary" },
   { id: "makharij", label: "شرح مخارج الحروف", icon: BookOpen, color: "mint" },
   { id: "similar-sounds", label: "تمييز الأصوات المتشابهة", icon: MessageCircle, color: "jellyfish" },
   { id: "words", label: "الكلمات والمقاطع", icon: Volume2, color: "yellow" },
