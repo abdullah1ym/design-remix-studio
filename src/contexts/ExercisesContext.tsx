@@ -34,9 +34,6 @@ interface ExercisesContextType {
 }
 
 const defaultExercises: Exercise[] = [
-  // ═══════════════════════════════════════════════════════════════════════════
-  // المخرج الأول: الجوف (Cavity) - حروف المد: ا، و، ي
-  // ═══════════════════════════════════════════════════════════════════════════
   {
     id: "jawfiya-1",
     title: "الحروف الجوفية",
@@ -57,7 +54,7 @@ const defaultExercises: Exercise[] = [
       { id: "jf9", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "أُو أُو أُو", options: ["ا", "و", "ي"], correctAnswer: 1 },
       { id: "jf10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "آ آ آ", options: ["ا", "و", "ي"], correctAnswer: 0 },
       { id: "jf11", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "إِي إِي إِي", options: ["ا", "و", "ي"], correctAnswer: 2 },
-      { id: "jf12", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "أُو أُو أُو", options: ["ا", "و", "ي"], correctAnswer: 1 },
+      { id: "jf12", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "أُو أُو أُو", options: ["ا", "و", "ي"], correctAnswer: 1 }
     ],
   },
   {
@@ -78,15 +75,9 @@ const defaultExercises: Exercise[] = [
       { id: "jfw7", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "مال", options: ["مال", "مول", "ميل"], correctAnswer: 0 },
       { id: "jfw8", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "روح", options: ["راح", "روح", "ريح"], correctAnswer: 1 },
       { id: "jfw9", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "ليل", options: ["لال", "لول", "ليل"], correctAnswer: 2 },
-      { id: "jfw10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "سار", options: ["سار", "سور", "سير"], correctAnswer: 0 },
+      { id: "jfw10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "سار", options: ["سار", "سور", "سير"], correctAnswer: 0 }
     ],
   },
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // المخرج الثاني: الحلق (Throat) - ثلاث مناطق
-  // ═══════════════════════════════════════════════════════════════════════════
-
-  // --- أقصى الحلق (أبعد نقطة): الهمزة والهاء ---
   {
     id: "halq-aqsa-1",
     title: "أقصى الحلق: الهمزة والهاء",
@@ -105,7 +96,7 @@ const defaultExercises: Exercise[] = [
       { id: "ha7", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "أَ أَ أَ", options: ["ء", "هـ"], correctAnswer: 0 },
       { id: "ha8", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "هَ هَ هَ", options: ["ء", "هـ"], correctAnswer: 1 },
       { id: "ha9", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "هَ هَ هَ", options: ["ء", "هـ"], correctAnswer: 1 },
-      { id: "ha10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "أَ أَ أَ", options: ["ء", "هـ"], correctAnswer: 0 },
+      { id: "ha10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "أَ أَ أَ", options: ["ء", "هـ"], correctAnswer: 0 }
     ],
   },
   {
@@ -126,11 +117,9 @@ const defaultExercises: Exercise[] = [
       { id: "haw7", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "أسد", options: ["أسد", "هسد"], correctAnswer: 0 },
       { id: "haw8", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "هدية", options: ["أدية", "هدية"], correctAnswer: 1 },
       { id: "haw9", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "إبرة", options: ["إبرة", "هبرة"], correctAnswer: 0 },
-      { id: "haw10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "هرم", options: ["أرم", "هرم"], correctAnswer: 1 },
+      { id: "haw10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "هرم", options: ["أرم", "هرم"], correctAnswer: 1 }
     ],
   },
-
-  // --- وسط الحلق: العين والحاء ---
   {
     id: "halq-wasat-1",
     title: "وسط الحلق: العين والحاء",
@@ -149,7 +138,7 @@ const defaultExercises: Exercise[] = [
       { id: "hw7", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "عَ عَ عَ", options: ["ع", "ح"], correctAnswer: 0 },
       { id: "hw8", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "حَ حَ حَ", options: ["ع", "ح"], correctAnswer: 1 },
       { id: "hw9", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "حَ حَ حَ", options: ["ع", "ح"], correctAnswer: 1 },
-      { id: "hw10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "عَ عَ عَ", options: ["ع", "ح"], correctAnswer: 0 },
+      { id: "hw10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "عَ عَ عَ", options: ["ع", "ح"], correctAnswer: 0 }
     ],
   },
   {
@@ -170,11 +159,9 @@ const defaultExercises: Exercise[] = [
       { id: "hww7", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "عود", options: ["عود", "حود"], correctAnswer: 0 },
       { id: "hww8", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "حوت", options: ["عوت", "حوت"], correctAnswer: 1 },
       { id: "hww9", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "عيد", options: ["عيد", "حيد"], correctAnswer: 0 },
-      { id: "hww10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "حمام", options: ["عمام", "حمام"], correctAnswer: 1 },
+      { id: "hww10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "حمام", options: ["عمام", "حمام"], correctAnswer: 1 }
     ],
   },
-
-  // --- أدنى الحلق (أقرب للفم): الغين والخاء ---
   {
     id: "halq-adna-1",
     title: "أدنى الحلق: الغين والخاء",
@@ -193,7 +180,7 @@ const defaultExercises: Exercise[] = [
       { id: "had7", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "غَ غَ غَ", options: ["غ", "خ"], correctAnswer: 0 },
       { id: "had8", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "خَ خَ خَ", options: ["غ", "خ"], correctAnswer: 1 },
       { id: "had9", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "خَ خَ خَ", options: ["غ", "خ"], correctAnswer: 1 },
-      { id: "had10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "غَ غَ غَ", options: ["غ", "خ"], correctAnswer: 0 },
+      { id: "had10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "غَ غَ غَ", options: ["غ", "خ"], correctAnswer: 0 }
     ],
   },
   {
@@ -214,11 +201,9 @@ const defaultExercises: Exercise[] = [
       { id: "hadw7", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "غيمة", options: ["غيمة", "خيمة"], correctAnswer: 0 },
       { id: "hadw8", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "خروف", options: ["غروف", "خروف"], correctAnswer: 1 },
       { id: "hadw9", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "غسيل", options: ["غسيل", "خسيل"], correctAnswer: 0 },
-      { id: "hadw10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "خضار", options: ["غضار", "خضار"], correctAnswer: 1 },
+      { id: "hadw10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "خضار", options: ["غضار", "خضار"], correctAnswer: 1 }
     ],
   },
-
-  // --- تمرين شامل لجميع حروف الحلق ---
   {
     id: "halq-all",
     title: "جميع حروف الحلق",
@@ -239,15 +224,9 @@ const defaultExercises: Exercise[] = [
       { id: "hall9", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "أَ أَ أَ", options: ["ء", "ع", "غ", "خ"], correctAnswer: 0 },
       { id: "hall10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "هَ هَ هَ", options: ["هـ", "ح", "غ", "خ"], correctAnswer: 0 },
       { id: "hall11", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "غَ غَ غَ", options: ["ء", "هـ", "غ", "خ"], correctAnswer: 2 },
-      { id: "hall12", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "خَ خَ خَ", options: ["ء", "هـ", "غ", "خ"], correctAnswer: 3 },
+      { id: "hall12", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "خَ خَ خَ", options: ["ء", "هـ", "غ", "خ"], correctAnswer: 3 }
     ],
   },
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // المخرج الثالث: اللسان (Tongue) - عدة مناطق
-  // ═══════════════════════════════════════════════════════════════════════════
-
-  // --- أقصى اللسان (مؤخرة اللسان): القاف والكاف ---
   {
     id: "lisan-aqsa-1",
     title: "أقصى اللسان: القاف والكاف",
@@ -266,7 +245,7 @@ const defaultExercises: Exercise[] = [
       { id: "la7", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "قَ قَ قَ", options: ["ق", "ك"], correctAnswer: 0 },
       { id: "la8", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "كَ كَ كَ", options: ["ق", "ك"], correctAnswer: 1 },
       { id: "la9", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "كَ كَ كَ", options: ["ق", "ك"], correctAnswer: 1 },
-      { id: "la10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "قَ قَ قَ", options: ["ق", "ك"], correctAnswer: 0 },
+      { id: "la10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "قَ قَ قَ", options: ["ق", "ك"], correctAnswer: 0 }
     ],
   },
   {
@@ -287,11 +266,9 @@ const defaultExercises: Exercise[] = [
       { id: "law7", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "قهوة", options: ["قهوة", "كهوة"], correctAnswer: 0 },
       { id: "law8", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "كعكة", options: ["قعقة", "كعكة"], correctAnswer: 1 },
       { id: "law9", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "قطة", options: ["قطة", "كطة"], correctAnswer: 0 },
-      { id: "law10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "كنز", options: ["قنز", "كنز"], correctAnswer: 1 },
+      { id: "law10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "كنز", options: ["قنز", "كنز"], correctAnswer: 1 }
     ],
   },
-
-  // --- وسط اللسان: الجيم والشين والياء غير المدية ---
   {
     id: "lisan-wasat-1",
     title: "وسط اللسان: الجيم والشين والياء",
@@ -310,11 +287,9 @@ const defaultExercises: Exercise[] = [
       { id: "lw7", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "شَ شَ شَ", options: ["ج", "ش", "ي"], correctAnswer: 1 },
       { id: "lw8", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "جَ جَ جَ", options: ["ج", "ش", "ي"], correctAnswer: 0 },
       { id: "lw9", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "يَ يَ يَ", options: ["ج", "ش", "ي"], correctAnswer: 2 },
-      { id: "lw10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "جَ جَ جَ", options: ["ج", "ش", "ي"], correctAnswer: 0 },
+      { id: "lw10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "جَ جَ جَ", options: ["ج", "ش", "ي"], correctAnswer: 0 }
     ],
   },
-
-  // --- حافة اللسان: الضاد (حرف فريد في العربية) ---
   {
     id: "lisan-hafa-dad",
     title: "حافة اللسان: الضاد",
@@ -333,11 +308,9 @@ const defaultExercises: Exercise[] = [
       { id: "ld7", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "ظَ ظَ ظَ", options: ["ض", "د", "ط", "ظ"], correctAnswer: 3 },
       { id: "ld8", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "طَ طَ طَ", options: ["ض", "د", "ط", "ظ"], correctAnswer: 2 },
       { id: "ld9", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "ضَ ضَ ضَ", options: ["ض", "د", "ط", "ظ"], correctAnswer: 0 },
-      { id: "ld10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "ظَ ظَ ظَ", options: ["ض", "د", "ط", "ظ"], correctAnswer: 3 },
+      { id: "ld10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "ظَ ظَ ظَ", options: ["ض", "د", "ط", "ظ"], correctAnswer: 3 }
     ],
   },
-
-  // --- طرف اللسان: حروف النطع (ت، د، ط) ---
   {
     id: "lisan-taraf-nat",
     title: "طرف اللسان - النِطع: التاء والدال والطاء",
@@ -356,11 +329,9 @@ const defaultExercises: Exercise[] = [
       { id: "ln7", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "دَ دَ دَ", options: ["ت", "د", "ط"], correctAnswer: 1 },
       { id: "ln8", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "تَ تَ تَ", options: ["ت", "د", "ط"], correctAnswer: 0 },
       { id: "ln9", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "طَ طَ طَ", options: ["ت", "د", "ط"], correctAnswer: 2 },
-      { id: "ln10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "تَ تَ تَ", options: ["ت", "د", "ط"], correctAnswer: 0 },
+      { id: "ln10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "تَ تَ تَ", options: ["ت", "د", "ط"], correctAnswer: 0 }
     ],
   },
-
-  // --- طرف اللسان: حروف اللثة (ث، ذ، ظ) ---
   {
     id: "lisan-taraf-litha",
     title: "طرف اللسان - اللثة: الثاء والذال والظاء",
@@ -379,11 +350,9 @@ const defaultExercises: Exercise[] = [
       { id: "ll7", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "ذَ ذَ ذَ", options: ["ث", "ذ", "ظ"], correctAnswer: 1 },
       { id: "ll8", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "ثَ ثَ ثَ", options: ["ث", "ذ", "ظ"], correctAnswer: 0 },
       { id: "ll9", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "ظَ ظَ ظَ", options: ["ث", "ذ", "ظ"], correctAnswer: 2 },
-      { id: "ll10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "ثَ ثَ ثَ", options: ["ث", "ذ", "ظ"], correctAnswer: 0 },
+      { id: "ll10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "ثَ ثَ ثَ", options: ["ث", "ذ", "ظ"], correctAnswer: 0 }
     ],
   },
-
-  // --- طرف اللسان: حروف الصفير (ص، س، ز) ---
   {
     id: "lisan-taraf-safir",
     title: "طرف اللسان - الصفير: الصاد والسين والزاي",
@@ -402,7 +371,7 @@ const defaultExercises: Exercise[] = [
       { id: "ls7", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "سَ سَ سَ", options: ["ص", "س", "ز"], correctAnswer: 1 },
       { id: "ls8", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "صَ صَ صَ", options: ["ص", "س", "ز"], correctAnswer: 0 },
       { id: "ls9", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "زَ زَ زَ", options: ["ص", "س", "ز"], correctAnswer: 2 },
-      { id: "ls10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "صَ صَ صَ", options: ["ص", "س", "ز"], correctAnswer: 0 },
+      { id: "ls10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "صَ صَ صَ", options: ["ص", "س", "ز"], correctAnswer: 0 }
     ],
   },
   {
@@ -423,11 +392,9 @@ const defaultExercises: Exercise[] = [
       { id: "lsw7", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "صندوق", options: ["صندوق", "سندوق", "زندوق"], correctAnswer: 0 },
       { id: "lsw8", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "سلم", options: ["صلم", "سلم", "زلم"], correctAnswer: 1 },
       { id: "lsw9", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "زرافة", options: ["صرافة", "سرافة", "زرافة"], correctAnswer: 2 },
-      { id: "lsw10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "صورة", options: ["صورة", "سورة", "زورة"], correctAnswer: 0 },
+      { id: "lsw10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "صورة", options: ["صورة", "سورة", "زورة"], correctAnswer: 0 }
     ],
   },
-
-  // --- طرف اللسان: اللام والنون والراء ---
   {
     id: "lisan-taraf-lnr",
     title: "طرف اللسان: اللام والنون والراء",
@@ -446,13 +413,9 @@ const defaultExercises: Exercise[] = [
       { id: "lnr7", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "نَ نَ نَ", options: ["ل", "ن", "ر"], correctAnswer: 1 },
       { id: "lnr8", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "لَ لَ لَ", options: ["ل", "ن", "ر"], correctAnswer: 0 },
       { id: "lnr9", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "رَ رَ رَ", options: ["ل", "ن", "ر"], correctAnswer: 2 },
-      { id: "lnr10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "لَ لَ لَ", options: ["ل", "ن", "ر"], correctAnswer: 0 },
+      { id: "lnr10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "لَ لَ لَ", options: ["ل", "ن", "ر"], correctAnswer: 0 }
     ],
   },
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // المخرج الرابع: الشفتان (Lips) - ف، و، ب، م
-  // ═══════════════════════════════════════════════════════════════════════════
   {
     id: "shafatan-1",
     title: "حروف الشفتين",
@@ -471,14 +434,14 @@ const defaultExercises: Exercise[] = [
       { id: "sh7", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "مَ مَ مَ", options: ["ف", "و", "ب", "م"], correctAnswer: 3 },
       { id: "sh8", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "وَ وَ وَ", options: ["ف", "و", "ب", "م"], correctAnswer: 1 },
       { id: "sh9", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "بَ بَ بَ", options: ["ف", "و", "ب", "م"], correctAnswer: 2 },
-      { id: "sh10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "فَ فَ فَ", options: ["ف", "و", "ب", "م"], correctAnswer: 0 },
+      { id: "sh10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "فَ فَ فَ", options: ["ف", "و", "ب", "م"], correctAnswer: 0 }
     ],
   },
   {
     id: "shafatan-fb",
     title: "التمييز بين الفاء والباء",
     description: "الفاء من الشفة السفلى والأسنان العليا، والباء من الشفتين معاً",
-    category: "words",
+    category: "similar-sounds",
     shuffleQuestions: true,
     difficulty: "beginner",
     type: "tone",
@@ -493,7 +456,7 @@ const defaultExercises: Exercise[] = [
       { id: "fb7", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "فَ فَ فَ", options: ["ف", "ب"], correctAnswer: 0 },
       { id: "fb8", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "بَ بَ بَ", options: ["ف", "ب"], correctAnswer: 1 },
       { id: "fb9", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "بَ بَ بَ", options: ["ف", "ب"], correctAnswer: 1 },
-      { id: "fb10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "فَ فَ فَ", options: ["ف", "ب"], correctAnswer: 0 },
+      { id: "fb10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "فَ فَ فَ", options: ["ف", "ب"], correctAnswer: 0 }
     ],
   },
   {
@@ -514,13 +477,9 @@ const defaultExercises: Exercise[] = [
       { id: "shw7", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "فستان", options: ["فستان", "بستان", "مستان"], correctAnswer: 0 },
       { id: "shw8", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "برتقال", options: ["فرتقال", "برتقال", "مرتقال"], correctAnswer: 1 },
       { id: "shw9", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "مفتاح", options: ["ففتاح", "بفتاح", "مفتاح"], correctAnswer: 2 },
-      { id: "shw10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "فأر", options: ["فأر", "بأر", "مأر"], correctAnswer: 0 },
+      { id: "shw10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "فأر", options: ["فأر", "بأر", "مأر"], correctAnswer: 0 }
     ],
   },
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // المخرج الخامس: الخيشوم (Nasal) - الغنة
-  // ═══════════════════════════════════════════════════════════════════════════
   {
     id: "khayshum-1",
     title: "الخيشوم: الأصوات الأنفية",
@@ -539,7 +498,7 @@ const defaultExercises: Exercise[] = [
       { id: "kh7", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "مّ مّ مّ", options: ["م", "ن"], correctAnswer: 0 },
       { id: "kh8", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "نّ نّ نّ", options: ["م", "ن"], correctAnswer: 1 },
       { id: "kh9", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "نّ نّ نّ", options: ["م", "ن"], correctAnswer: 1 },
-      { id: "kh10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "مّ مّ مّ", options: ["م", "ن"], correctAnswer: 0 },
+      { id: "kh10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "مّ مّ مّ", options: ["م", "ن"], correctAnswer: 0 }
     ],
   },
   {
@@ -560,20 +519,15 @@ const defaultExercises: Exercise[] = [
       { id: "khw7", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "ثمّ", options: ["ثمّ", "ثنّ"], correctAnswer: 0 },
       { id: "khw8", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "عنّب", options: ["عمّب", "عنّب"], correctAnswer: 1 },
       { id: "khw9", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "حمّام", options: ["حمّام", "حنّام"], correctAnswer: 0 },
-      { id: "khw10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "فنّان", options: ["فمّان", "فنّان"], correctAnswer: 1 },
+      { id: "khw10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "فنّان", options: ["فمّان", "فنّان"], correctAnswer: 1 }
     ],
   },
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // تمارين خاصة لمستخدمي زراعة القوقعة (CI-Specific)
-  // ═══════════════════════════════════════════════════════════════════════════
-
-  // --- الأزواج الدنيا (Minimal Pairs) - كلمات تختلف بصوت واحد فقط ---
   {
     id: "ci-minimal-pairs-1",
     title: "الأزواج الدنيا: المستوى الأول",
     description: "كلمات تختلف بحرف واحد فقط - تمرين أساسي لتدريب السمع",
-    category: "similar-sounds",
+    category: "words",
+    shuffleQuestions: true,
     difficulty: "beginner",
     type: "word",
     duration: "٧ دقائق",
@@ -587,14 +541,15 @@ const defaultExercises: Exercise[] = [
       { id: "mp7", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "طين", options: ["دين", "طين"], correctAnswer: 1 },
       { id: "mp8", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "ضرب", options: ["ضرب", "درب"], correctAnswer: 0 },
       { id: "mp9", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "فار", options: ["فار", "بار"], correctAnswer: 0 },
-      { id: "mp10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "مال", options: ["نال", "مال"], correctAnswer: 1 },
+      { id: "mp10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "مال", options: ["نال", "مال"], correctAnswer: 1 }
     ],
   },
   {
     id: "ci-minimal-pairs-2",
     title: "الأزواج الدنيا: المستوى الثاني",
     description: "أزواج دنيا أكثر تعقيداً للتمييز الدقيق",
-    category: "similar-sounds",
+    category: "words",
+    shuffleQuestions: true,
     difficulty: "intermediate",
     type: "word",
     duration: "٧ دقائق",
@@ -608,11 +563,9 @@ const defaultExercises: Exercise[] = [
       { id: "mp2-7", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "هدى", options: ["هدى", "أدى"], correctAnswer: 0 },
       { id: "mp2-8", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "قال", options: ["قال", "كال"], correctAnswer: 0 },
       { id: "mp2-9", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "رمل", options: ["رمل", "لمل"], correctAnswer: 0 },
-      { id: "mp2-10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "جمل", options: ["حمل", "جمل"], correctAnswer: 1 },
+      { id: "mp2-10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "جمل", options: ["حمل", "جمل"], correctAnswer: 1 }
     ],
   },
-
-  // --- التمييز بين المجهور والمهموس (Voiced vs Voiceless) ---
   {
     id: "ci-voiced-voiceless",
     title: "المجهور والمهموس",
@@ -631,11 +584,9 @@ const defaultExercises: Exercise[] = [
       { id: "vv7", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "غَ غَ غَ", options: ["غ (مجهور)", "خ (مهموس)"], correctAnswer: 0 },
       { id: "vv8", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "خَ خَ خَ", options: ["غ (مجهور)", "خ (مهموس)"], correctAnswer: 1 },
       { id: "vv9", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "ظَ ظَ ظَ", options: ["ظ (مجهور)", "ث (مهموس)"], correctAnswer: 0 },
-      { id: "vv10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "ثَ ثَ ثَ", options: ["ذ (مجهور)", "ث (مهموس)"], correctAnswer: 1 },
+      { id: "vv10", prompt: "ما الحرف الذي سمعته؟", audioPlaceholder: "ثَ ثَ ثَ", options: ["ذ (مجهور)", "ث (مهموس)"], correctAnswer: 1 }
     ],
   },
-
-  // --- التمييز الترددي (تردد عالي مقابل منخفض) ---
   {
     id: "ci-frequency",
     title: "التمييز الترددي",
@@ -654,17 +605,14 @@ const defaultExercises: Exercise[] = [
       { id: "fr7", prompt: "هل الصوت عالي أم منخفض التردد؟", audioPlaceholder: "ثَ ثَ ثَ", options: ["عالي التردد", "منخفض التردد"], correctAnswer: 0 },
       { id: "fr8", prompt: "هل الصوت عالي أم منخفض التردد؟", audioPlaceholder: "غَ غَ غَ", options: ["عالي التردد", "منخفض التردد"], correctAnswer: 1 },
       { id: "fr9", prompt: "هل الصوت عالي أم منخفض التردد؟", audioPlaceholder: "صَ صَ صَ", options: ["عالي التردد", "منخفض التردد"], correctAnswer: 0 },
-      { id: "fr10", prompt: "هل الصوت عالي أم منخفض التردد؟", audioPlaceholder: "بَ بَ بَ", options: ["عالي التردد", "منخفض التردد"], correctAnswer: 1 },
+      { id: "fr10", prompt: "هل الصوت عالي أم منخفض التردد؟", audioPlaceholder: "بَ بَ بَ", options: ["عالي التردد", "منخفض التردد"], correctAnswer: 1 }
     ],
   },
-
-  // --- تمارين الحروف المتشابهة الموجودة سابقاً (محدثة) ---
-  // === تمارين التمييز بين الحروف المتشابهة ===
   {
     id: "letters-1",
     title: "كلمات ب و ت",
     description: "استمع للكلمة واختر الكلمة الصحيحة",
-    category: "words",
+    category: "similar-sounds",
     shuffleQuestions: true,
     difficulty: "intermediate",
     type: "word",
@@ -672,14 +620,14 @@ const defaultExercises: Exercise[] = [
     questions: [
       { id: "bt1", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "باب", options: ["باب", "تاب", "بيت", "تين"], correctAnswer: 0 },
       { id: "bt2", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "تمر", options: ["بمر", "تمر", "بحر", "تين"], correctAnswer: 1 },
-      { id: "bt3", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "بيت", options: ["بيت", "تيت", "باب", "تمر"], correctAnswer: 0 },
+      { id: "bt3", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "بيت", options: ["بيت", "تيت", "باب", "تمر"], correctAnswer: 0 }
     ],
   },
   {
     id: "letters-2",
     title: "كلمات س و ش",
     description: "استمع للكلمة واختر الكلمة الصحيحة",
-    category: "words",
+    category: "similar-sounds",
     shuffleQuestions: true,
     difficulty: "intermediate",
     type: "word",
@@ -687,14 +635,14 @@ const defaultExercises: Exercise[] = [
     questions: [
       { id: "ss1", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "سمك", options: ["سمك", "شمس", "سيف", "شجر"], correctAnswer: 0 },
       { id: "ss2", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "شمس", options: ["سمك", "شمس", "سيف", "شجر"], correctAnswer: 1 },
-      { id: "ss3", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "سيارة", options: ["سيارة", "شجرة", "سمكة", "شمعة"], correctAnswer: 0 },
+      { id: "ss3", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "سيارة", options: ["سيارة", "شجرة", "سمكة", "شمعة"], correctAnswer: 0 }
     ],
   },
   {
     id: "letters-3",
     title: "كلمات د و ذ",
     description: "استمع للكلمة واختر الكلمة الصحيحة",
-    category: "words",
+    category: "similar-sounds",
     shuffleQuestions: true,
     difficulty: "intermediate",
     type: "word",
@@ -702,14 +650,14 @@ const defaultExercises: Exercise[] = [
     questions: [
       { id: "dd1", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "دار", options: ["دار", "ذهب", "دجاج", "ذئب"], correctAnswer: 0 },
       { id: "dd2", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "ذهب", options: ["دار", "ذهب", "دجاج", "ذئب"], correctAnswer: 1 },
-      { id: "dd3", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "دجاجة", options: ["دجاجة", "ذبابة", "دراجة", "ذرة"], correctAnswer: 0 },
+      { id: "dd3", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "دجاجة", options: ["دجاجة", "ذبابة", "دراجة", "ذرة"], correctAnswer: 0 }
     ],
   },
   {
     id: "letters-4",
     title: "كلمات ح و خ",
     description: "استمع للكلمة واختر الكلمة الصحيحة",
-    category: "words",
+    category: "similar-sounds",
     shuffleQuestions: true,
     difficulty: "intermediate",
     type: "word",
@@ -717,14 +665,14 @@ const defaultExercises: Exercise[] = [
     questions: [
       { id: "hk1", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "حصان", options: ["حصان", "خروف", "حليب", "خبز"], correctAnswer: 0 },
       { id: "hk2", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "خبز", options: ["حصان", "خبز", "حليب", "خروف"], correctAnswer: 1 },
-      { id: "hk3", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "حمامة", options: ["حمامة", "خيمة", "حديقة", "خزانة"], correctAnswer: 0 },
+      { id: "hk3", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "حمامة", options: ["حمامة", "خيمة", "حديقة", "خزانة"], correctAnswer: 0 }
     ],
   },
   {
     id: "letters-5",
     title: "كلمات ع و غ",
     description: "استمع للكلمة واختر الكلمة الصحيحة",
-    category: "words",
+    category: "similar-sounds",
     shuffleQuestions: true,
     difficulty: "intermediate",
     type: "word",
@@ -732,14 +680,14 @@ const defaultExercises: Exercise[] = [
     questions: [
       { id: "ag1", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "عين", options: ["عين", "غابة", "عنب", "غراب"], correctAnswer: 0 },
       { id: "ag2", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "غراب", options: ["عين", "غراب", "عنب", "غابة"], correctAnswer: 1 },
-      { id: "ag3", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "عصفور", options: ["عصفور", "غسالة", "عنكبوت", "غرفة"], correctAnswer: 0 },
+      { id: "ag3", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "عصفور", options: ["عصفور", "غسالة", "عنكبوت", "غرفة"], correctAnswer: 0 }
     ],
   },
   {
     id: "letters-6",
     title: "كلمات ص و ض",
     description: "استمع للكلمة واختر الكلمة الصحيحة",
-    category: "words",
+    category: "similar-sounds",
     shuffleQuestions: true,
     difficulty: "intermediate",
     type: "word",
@@ -747,14 +695,14 @@ const defaultExercises: Exercise[] = [
     questions: [
       { id: "sd1", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "صقر", options: ["صقر", "ضفدع", "صباح", "ضوء"], correctAnswer: 0 },
       { id: "sd2", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "ضفدع", options: ["صقر", "ضفدع", "صباح", "ضوء"], correctAnswer: 1 },
-      { id: "sd3", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "صندوق", options: ["صندوق", "ضابط", "صاروخ", "ضيف"], correctAnswer: 0 },
+      { id: "sd3", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "صندوق", options: ["صندوق", "ضابط", "صاروخ", "ضيف"], correctAnswer: 0 }
     ],
   },
   {
     id: "letters-7",
     title: "كلمات ط و ظ",
     description: "استمع للكلمة واختر الكلمة الصحيحة",
-    category: "words",
+    category: "similar-sounds",
     shuffleQuestions: true,
     difficulty: "intermediate",
     type: "word",
@@ -762,14 +710,14 @@ const defaultExercises: Exercise[] = [
     questions: [
       { id: "tz1", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "طبيب", options: ["طبيب", "ظرف", "طالب", "ظل"], correctAnswer: 0 },
       { id: "tz2", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "ظهر", options: ["طبل", "ظهر", "طائر", "ظلم"], correctAnswer: 1 },
-      { id: "tz3", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "طماطم", options: ["طماطم", "ظلام", "طاولة", "ظبي"], correctAnswer: 0 },
+      { id: "tz3", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "طماطم", options: ["طماطم", "ظلام", "طاولة", "ظبي"], correctAnswer: 0 }
     ],
   },
   {
     id: "letters-8",
     title: "كلمات ك و ق",
     description: "استمع للكلمة واختر الكلمة الصحيحة",
-    category: "words",
+    category: "similar-sounds",
     shuffleQuestions: true,
     difficulty: "intermediate",
     type: "word",
@@ -777,10 +725,9 @@ const defaultExercises: Exercise[] = [
     questions: [
       { id: "kq1", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "كتاب", options: ["كتاب", "قلم", "كرسي", "قمر"], correctAnswer: 0 },
       { id: "kq2", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "قلب", options: ["كلب", "قلب", "كتف", "قدم"], correctAnswer: 1 },
-      { id: "kq3", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "كوب", options: ["كوب", "قوس", "كعك", "قطة"], correctAnswer: 0 },
+      { id: "kq3", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "كوب", options: ["كوب", "قوس", "كعك", "قطة"], correctAnswer: 0 }
     ],
   },
-  // === تمارين الكلمات المتشابهة ===
   {
     id: "words-1",
     title: "كلمات بحرف ب و ت",
@@ -799,7 +746,7 @@ const defaultExercises: Exercise[] = [
       { id: "wbt7", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "بنت", options: ["بنت", "تنت"], correctAnswer: 0 },
       { id: "wbt8", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "تفاح", options: ["بفاح", "تفاح"], correctAnswer: 1 },
       { id: "wbt9", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "بقرة", options: ["بقرة", "تقرة"], correctAnswer: 0 },
-      { id: "wbt10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "توت", options: ["بوت", "توت"], correctAnswer: 1 },
+      { id: "wbt10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "توت", options: ["بوت", "توت"], correctAnswer: 1 }
     ],
   },
   {
@@ -820,7 +767,7 @@ const defaultExercises: Exercise[] = [
       { id: "wss7", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "سرير", options: ["سرير", "شرير"], correctAnswer: 0 },
       { id: "wss8", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "شمعة", options: ["سمعة", "شمعة"], correctAnswer: 1 },
       { id: "wss9", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "سكين", options: ["سكين", "شكين"], correctAnswer: 0 },
-      { id: "wss10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "شارع", options: ["سارع", "شارع"], correctAnswer: 1 },
+      { id: "wss10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "شارع", options: ["سارع", "شارع"], correctAnswer: 1 }
     ],
   },
   {
@@ -841,10 +788,9 @@ const defaultExercises: Exercise[] = [
       { id: "whk7", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "حديقة", options: ["حديقة", "خديقة"], correctAnswer: 0 },
       { id: "whk8", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "خضار", options: ["حضار", "خضار"], correctAnswer: 1 },
       { id: "whk9", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "حمام", options: ["حمام", "خمام"], correctAnswer: 0 },
-      { id: "whk10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "خاتم", options: ["حاتم", "خاتم"], correctAnswer: 1 },
+      { id: "whk10", prompt: "ما الكلمة التي سمعتها؟", audioPlaceholder: "خاتم", options: ["حاتم", "خاتم"], correctAnswer: 1 }
     ],
   },
-  // === تمارين الجمل ===
   {
     id: "sentences-1",
     title: "جمل قصيرة",
@@ -861,7 +807,7 @@ const defaultExercises: Exercise[] = [
       { id: "s5", prompt: "ما الجملة التي سمعتها؟", audioPlaceholder: "البيت كبير", options: ["البيت كبير", "التيت كبير"], correctAnswer: 0 },
       { id: "s6", prompt: "ما الجملة التي سمعتها؟", audioPlaceholder: "الشارع طويل", options: ["السارع طويل", "الشارع طويل"], correctAnswer: 1 },
       { id: "s7", prompt: "ما الجملة التي سمعتها؟", audioPlaceholder: "السيارة سريعة", options: ["السيارة سريعة", "الشيارة سريعة"], correctAnswer: 0 },
-      { id: "s8", prompt: "ما الجملة التي سمعتها؟", audioPlaceholder: "الطفل نائم", options: ["الظفل نائم", "الطفل نائم"], correctAnswer: 1 },
+      { id: "s8", prompt: "ما الجملة التي سمعتها؟", audioPlaceholder: "الطفل نائم", options: ["الظفل نائم", "الطفل نائم"], correctAnswer: 1 }
     ],
   },
   {
@@ -869,10 +815,10 @@ const defaultExercises: Exercise[] = [
     title: "جمل ذات معنى كامل",
     description: "استمع للجملة واختر الجملة الصحيحة",
     category: "sentences",
+    shuffleQuestions: true,
     difficulty: "beginner",
     type: "sentence",
     duration: "٥ دقائق",
-    shuffleQuestions: true,
     questions: [
       { id: "q1", prompt: "ما الجملة التي سمعتها؟", audioPlaceholder: "شرب الطفل ماء", options: ["شرب الطفل ماء", "شرب الطفل دواء"], correctAnswer: 0 },
       { id: "q2", prompt: "ما الجملة التي سمعتها؟", audioPlaceholder: "وقد قام الرجل مبكرًا", options: ["وقد قام الرجل مبكرًا", "وقد نام الرجل مبكرًا"], correctAnswer: 0 },
@@ -884,12 +830,12 @@ const defaultExercises: Exercise[] = [
       { id: "q8", prompt: "ما الجملة التي سمعتها؟", audioPlaceholder: "سمعَ أحمدُ الأذان", options: ["سمعَ أحمدُ الأذان", "سمعَ أحمدُ الأمان"], correctAnswer: 0 },
       { id: "q9", prompt: "ما الجملة التي سمعتها؟", audioPlaceholder: "سفر خالد ليلاً", options: ["سفر خالد ليلاً", "سهر خالد ليلاً"], correctAnswer: 0 },
       { id: "q10", prompt: "ما الجملة التي سمعتها؟", audioPlaceholder: "أرادت المرأة خاتمًا", options: ["أرادت المرأة خاتمًا", "أرادت المرأة خادمًا"], correctAnswer: 0 },
-      { id: "q11", prompt: "ما الجملة التي سمعتها؟", audioPlaceholder: "سمع الطفل جرس", options: ["سمع الطفل جرس", "سمع الطفل درس"], correctAnswer: 0 },
+      { id: "q11", prompt: "ما الجملة التي سمعتها؟", audioPlaceholder: "سمع الطفل جرس", options: ["سمع الطفل جرس", "سمع الطفل درس"], correctAnswer: 0 }
     ],
-  },
+  }
 ];
 
-const STORAGE_KEY = "deepdive-exercises-v11";
+const STORAGE_KEY = "deepdive-exercises-v19";
 
 const ExercisesContext = createContext<ExercisesContextType | undefined>(undefined);
 

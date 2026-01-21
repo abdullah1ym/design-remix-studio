@@ -1,11 +1,12 @@
 import { useState, useRef } from "react";
-import { Download, Upload, RotateCcw, Check, AlertCircle } from "lucide-react";
+import { Download, Upload, RotateCcw, Check, AlertCircle, Save } from "lucide-react";
 import { useExercises } from "@/contexts/ExercisesContext";
 import { useLessons } from "@/contexts/LessonsContext";
 import { useSkills } from "@/contexts/SkillsContext";
 
 const DataExport = () => {
   const { exercises, resetToDefaults: resetExercises } = useExercises();
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "success" | "error">("idle");
   const { lessons, resetToDefaults: resetLessons } = useLessons();
   const { skills } = useSkills();
 
@@ -79,6 +80,29 @@ const DataExport = () => {
     window.location.reload();
   };
 
+  const handleSaveToCode = async () => {
+    setSaveStatus("saving");
+    try {
+      const response = await fetch('/api/save-exercises', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ exercises })
+      });
+
+      if (response.ok) {
+        setSaveStatus("success");
+        setTimeout(() => setSaveStatus("idle"), 2000);
+      } else {
+        setSaveStatus("error");
+        setTimeout(() => setSaveStatus("idle"), 3000);
+      }
+    } catch (err) {
+      console.error("Save error:", err);
+      setSaveStatus("error");
+      setTimeout(() => setSaveStatus("idle"), 3000);
+    }
+  };
+
   return (
     <div className="relative">
       <input
@@ -144,6 +168,35 @@ const DataExport = () => {
             <RotateCcw className="w-4 h-4" />
           </button>
         )}
+
+        <button
+          onClick={handleSaveToCode}
+          disabled={saveStatus === "saving"}
+          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-xl text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+          title="حفظ التمارين في الكود"
+        >
+          {saveStatus === "saving" ? (
+            <>
+              <RotateCcw className="w-4 h-4 animate-spin" />
+              جاري الحفظ...
+            </>
+          ) : saveStatus === "success" ? (
+            <>
+              <Check className="w-4 h-4 text-mint" />
+              تم الحفظ
+            </>
+          ) : saveStatus === "error" ? (
+            <>
+              <AlertCircle className="w-4 h-4" />
+              خطأ
+            </>
+          ) : (
+            <>
+              <Save className="w-4 h-4" />
+              حفظ في الكود
+            </>
+          )}
+        </button>
       </div>
     </div>
   );
