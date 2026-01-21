@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -44,6 +45,7 @@ const SoundExerciseModal = ({
   initialSoundId,
   initialLevel
 }: SoundExerciseModalProps) => {
+  const navigate = useNavigate();
   const {
     recordAnswer,
     getSoundProgress,
@@ -82,13 +84,9 @@ const SoundExerciseModal = ({
     }
 
     if (soundId && initialLevel) {
-      setSelectedSoundId(soundId);
-      setSelectedLevel(initialLevel);
-      const ex = generateExercise(soundId, initialLevel);
-      if (ex) {
-        setExercise(ex);
-        setViewState("exercise");
-      }
+      // Navigate directly to full page exercise
+      onClose();
+      navigate(`/sound-exercise/${soundId}/${initialLevel}`);
     } else if (soundId) {
       // Skip to level selection when only sound is provided
       setSelectedSoundId(soundId);
@@ -97,7 +95,7 @@ const SoundExerciseModal = ({
       // Reset to sound selection if no initial values
       setViewState("select-sound");
     }
-  }, [isOpen, initialSoundId, initialLevel]);
+  }, [isOpen, initialSoundId, initialLevel, navigate, onClose]);
 
   const availableSounds = getAvailableSounds();
 
@@ -112,13 +110,9 @@ const SoundExerciseModal = ({
     const status = getSoundMasteryStatus(selectedSoundId, level);
     if (status === 'locked') return;
 
-    setSelectedLevel(level);
-    const ex = generateExercise(selectedSoundId, level);
-    if (ex) {
-      setExercise(ex);
-      setViewState("exercise");
-      resetExerciseState();
-    }
+    // Close modal and navigate to full page exercise
+    onClose();
+    navigate(`/sound-exercise/${selectedSoundId}/${level}`);
   };
 
   const resetExerciseState = () => {
@@ -228,7 +222,7 @@ const SoundExerciseModal = ({
 
   const getLevelIcon = (level: TrainingLevel, status: string) => {
     if (status === 'locked') return <Lock className="w-4 h-4" />;
-    if (status === 'mastered') return <Star className="w-4 h-4 text-yellow" />;
+    if (status === 'mastered') return <Star className="w-4 h-4 text-green-500" />;
     if (status === 'in_progress') return <Target className="w-4 h-4 text-turquoise" />;
     return null;
   };
@@ -236,7 +230,7 @@ const SoundExerciseModal = ({
   const getLevelColor = (status: string) => {
     switch (status) {
       case 'locked': return 'bg-muted/50 text-muted-foreground cursor-not-allowed';
-      case 'mastered': return 'bg-yellow/20 text-yellow border-yellow/30 hover:bg-yellow/30';
+      case 'mastered': return 'bg-green-500/20 text-green-500 border-green-500/30 hover:bg-green-500/30';
       case 'in_progress': return 'bg-turquoise/20 text-turquoise border-turquoise/30 hover:bg-turquoise/30';
       default: return 'bg-muted hover:bg-muted/80 border-transparent';
     }

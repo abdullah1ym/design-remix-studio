@@ -501,59 +501,16 @@ const ExerciseModal = ({ exercise, open, onClose }: ExerciseModalProps) => {
                           <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="mt-6 space-y-3"
+                            className="mt-6"
                           >
                             {/* Main feedback */}
                             <div className={`p-4 rounded-2xl text-center ${
                               isCorrect ? "bg-green-500/20 text-green-500" : "bg-red-500/20 text-red-400"
                             }`}>
                               <p className="font-bold text-lg">
-                                {judgeResults[qIndex]?.feedback || (isCorrect ? "إجابة صحيحة!" : "إجابة خاطئة")}
+                                {isCorrect ? "إجابة صحيحة!" : "إجابة خاطئة"}
                               </p>
-                              {!isCorrect && !judgeResults[qIndex] && correctAnswerForQ !== undefined && (
-                                <p className="text-sm mt-1">
-                                  الإجابة الصحيحة: {question.options[correctAnswerForQ]}
-                                </p>
-                              )}
                             </div>
-
-                            {/* Smart Judge: Confusion Warning */}
-                            {judgeResults[qIndex]?.isConfusionError && judgeResults[qIndex]?.confusedWith && (
-                              <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: "auto" }}
-                                className="p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-2xl text-right"
-                              >
-                                <div className="flex items-start gap-3">
-                                  <AlertCircle className="w-5 h-5 text-yellow-500 shrink-0 mt-0.5" />
-                                  <div>
-                                    <p className="font-medium text-yellow-500">
-                                      {judgeResults[qIndex].detailedFeedback.explanation}
-                                    </p>
-                                    {judgeResults[qIndex].detailedFeedback.tip && (
-                                      <p className="text-sm mt-1 text-muted-foreground">
-                                        {judgeResults[qIndex].detailedFeedback.tip}
-                                      </p>
-                                    )}
-                                    {judgeResults[qIndex].detailedFeedback.practiceWords &&
-                                     judgeResults[qIndex].detailedFeedback.practiceWords!.length > 0 && (
-                                      <p className="text-sm mt-2 text-muted-foreground">
-                                        كلمات للتدريب: {judgeResults[qIndex].detailedFeedback.practiceWords!.join(' - ')}
-                                      </p>
-                                    )}
-                                  </div>
-                                </div>
-                              </motion.div>
-                            )}
-
-                            {/* Smart Judge: Suggestion */}
-                            {judgeResults[qIndex]?.suggestion && !judgeResults[qIndex]?.isConfusionError && !isCorrect && (
-                              <div className="p-3 bg-muted rounded-xl text-right">
-                                <p className="text-sm text-muted-foreground">
-                                  {judgeResults[qIndex].suggestion}
-                                </p>
-                              </div>
-                            )}
                           </motion.div>
                         )}
                       </div>

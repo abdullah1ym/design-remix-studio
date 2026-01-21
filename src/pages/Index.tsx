@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
@@ -22,11 +23,27 @@ import SoundLibraryView from "@/components/views/SoundLibraryView";
 import SkillMapView from "@/components/views/SkillMapView";
 
 const Index = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState("home");
   const [activeCategory, setActiveCategory] = useState("arabic-sounds");
   const [adminOpen, setAdminOpen] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   const [exerciseModalOpen, setExerciseModalOpen] = useState(false);
+
+  // Check for navigation state to set active category
+  useEffect(() => {
+    const state = location.state as { activeCategory?: string; openMakharijGroup?: string } | null;
+    if (state?.activeCategory) {
+      setActiveCategory(state.activeCategory);
+      // Preserve openMakharijGroup for MakharijGrid to read, only clear activeCategory
+      if (state.openMakharijGroup) {
+        navigate(location.pathname, { replace: true, state: { openMakharijGroup: state.openMakharijGroup } });
+      } else {
+        navigate(location.pathname, { replace: true, state: {} });
+      }
+    }
+  }, [location.state, navigate, location.pathname]);
 
   const handleExerciseClick = (exercise: Exercise) => {
     setSelectedExercise(exercise);

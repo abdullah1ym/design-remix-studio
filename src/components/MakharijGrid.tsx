@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import MakharijExerciseModal from "./MakharijExerciseModal";
 import { Exercise as GlobalExercise } from "@/contexts/ExercisesContext";
 
 interface LocalExercise {
@@ -301,35 +301,37 @@ const getAllLetters = (group: ArticulationGroup): string[] => {
 };
 
 const MakharijGrid = ({ onExerciseClick }: MakharijGridProps) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
   const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
-  const [selectedExercise, setSelectedExercise] = useState<LocalExercise | null>(null);
-  const [exerciseModalOpen, setExerciseModalOpen] = useState(false);
+
+  // Check for navigation state to open a specific group
+  useEffect(() => {
+    const state = location.state as { openMakharijGroup?: string } | null;
+    if (state?.openMakharijGroup) {
+      setSelectedGroup(state.openMakharijGroup);
+      // Clear the state
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, navigate, location.pathname]);
 
   const activeGroup = articulationGroups.find(g => g.id === selectedGroup);
 
   const handleStartExercise = (e: React.MouseEvent, exercise: LocalExercise, subGroup: SubGroup) => {
     e.stopPropagation();
 
-    // For الحلق (throat), use the full-page exercise modal
-    if (activeGroup?.id === 'throat' && onExerciseClick) {
-      const globalExercise = convertToGlobalExercise(
+    // Navigate to full page exercise
+    navigate('/makharij-exercise', {
+      state: {
         exercise,
-        activeGroup.arabicName,
-        subGroup.name,
-        subGroup.letters
-      );
-      onExerciseClick(globalExercise);
-    } else {
-      // For other groups, use the local modal
-      setSelectedExercise(exercise);
-      setExerciseModalOpen(true);
-    }
-  };
-
-  const handleCloseExercise = () => {
-    setExerciseModalOpen(false);
-    setSelectedExercise(null);
+        groupId: activeGroup?.id || '',
+        groupName: activeGroup?.arabicName || '',
+        groupColor: activeGroup?.color || 'primary',
+        letters: subGroup.letters,
+        subGroupName: subGroup.name
+      }
+    });
   };
 
   return (
@@ -548,16 +550,7 @@ const MakharijGrid = ({ onExerciseClick }: MakharijGridProps) => {
         )}
       </motion.div>
 
-      {/* Exercise Modal */}
-      <MakharijExerciseModal
-        open={exerciseModalOpen}
-        onClose={handleCloseExercise}
-        exercise={selectedExercise}
-        groupName={activeGroup?.arabicName || ''}
-        groupColor={activeGroup?.color || 'primary'}
-        letters={activeGroup ? getAllLetters(activeGroup) : []}
-      />
-    </div>
+      </div>
   );
 };
 

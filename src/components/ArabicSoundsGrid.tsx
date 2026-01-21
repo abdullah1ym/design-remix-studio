@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import SoundExerciseModal from "@/components/SoundExerciseModal";
 
@@ -10,8 +11,21 @@ const arabicLetters = [
 ];
 
 const ArabicSoundsGrid = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
   const [soundExerciseOpen, setSoundExerciseOpen] = useState(false);
+
+  // Check if we should reopen the modal for a specific sound
+  useEffect(() => {
+    const state = location.state as { openSoundId?: string } | null;
+    if (state?.openSoundId) {
+      setSelectedLetter(state.openSoundId);
+      setSoundExerciseOpen(true);
+      // Clear the state so it doesn't reopen on refresh
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, navigate, location.pathname]);
 
   const handleLetterClick = (letter: string) => {
     setSelectedLetter(letter);

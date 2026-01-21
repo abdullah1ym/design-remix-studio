@@ -9,6 +9,8 @@ import { LessonsProvider } from "@/contexts/LessonsContext";
 import { SoundProgressProvider } from "@/contexts/SoundProgressContext";
 import Index from "./pages/Index";
 import Admin from "./pages/Admin";
+import SoundExercise from "./pages/SoundExercise";
+import MakharijExercise from "./pages/MakharijExercise";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +28,8 @@ const App = () => (
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/admin" element={<Admin />} />
+                  <Route path="/sound-exercise/:soundId/:level" element={<SoundExercise />} />
+                  <Route path="/makharij-exercise" element={<MakharijExercise />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
